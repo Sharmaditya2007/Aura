@@ -53,16 +53,16 @@ export const AuthProvider = ({ children }) => {
       confirmPassword,
     });
     if (res.data?.success && res.data?.data) {
-      // If requires OTP verification
-      if (res.data.data.requiresVerification) {
-        return res.data.data;
-      }
       const { token: jwtToken, user: userProfile } = res.data.data;
-      setToken(jwtToken);
-      setUser(userProfile);
-      localStorage.setItem('aura_token', jwtToken);
-      localStorage.setItem('aura_user', JSON.stringify(userProfile));
-      return userProfile;
+      if (jwtToken) {
+        setToken(jwtToken);
+        localStorage.setItem('aura_token', jwtToken);
+      }
+      if (userProfile) {
+        setUser(userProfile);
+        localStorage.setItem('aura_user', JSON.stringify(userProfile));
+      }
+      return userProfile || res.data.data;
     }
     throw new Error(res.data?.message || 'Registration failed');
   };

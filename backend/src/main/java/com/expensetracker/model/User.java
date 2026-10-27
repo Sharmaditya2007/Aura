@@ -33,7 +33,7 @@ public class User {
 
     private LocalDateTime verificationOtpExpiresAt;
 
-    private boolean emailVerified = false;
+    private boolean emailVerified = true;
 
     private LocalDateTime lastLoginAt;
 

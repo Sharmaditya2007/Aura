@@ -62,10 +62,14 @@ public class AuthService {
             if (existing.isEmailVerified()) {
                 throw new ConflictException("An account with this email address already exists");
             }
-            // User registered previously but has not completed OTP verification yet
+            // User registered previously in pending state
             user = existing;
             user.setFullName(request.getFullName().trim());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setEmailVerified(true);
+            user.setVerificationOtp(null);
+            user.setVerificationOtpExpiresAt(null);
+            user.setLastLoginAt(LocalDateTime.now());
             user.setUpdatedAt(LocalDateTime.now());
         } else {
             user = new User();
@@ -74,23 +78,28 @@ public class AuthService {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setRole(Role.ROLE_USER);
             user.setStatus(UserStatus.ACTIVE);
+            user.setEmailVerified(true);
+            user.setVerificationOtp(null);
+            user.setVerificationOtpExpiresAt(null);
+            user.setLastLoginAt(LocalDateTime.now());
             user.setCreatedAt(LocalDateTime.now());
             user.setUpdatedAt(LocalDateTime.now());
         }
 
-        // Generate 6-digit cryptographic security code
-        String otp = String.format("%06d", new SecureRandom().nextInt(1000000));
-        user.setVerificationOtp(otp);
-        user.setVerificationOtpExpiresAt(LocalDateTime.now().plusMinutes(10));
-        user.setEmailVerified(false);
+        User savedUser = userRepository.save(user);
 
-        userRepository.save(user);
-        log.info(">>> GENERATED 6-DIGIT OTP FOR {}: {} <<<", user.getEmail(), otp);
+        // Welcome notification
+        notificationService.createNotification(
+                savedUser.getId(),
+                "Welcome to AURA Finance",
+                "Your account has been established and your private financial ledger is active.",
+                NotificationType.SYSTEM
+        );
 
-        // Dispatch Email
-        emailService.sendRegistrationOtpEmail(user.getEmail(), user.getFullName(), otp);
+        UserPrincipal principal = UserPrincipal.create(savedUser);
+        String token = tokenProvider.generateToken(principal);
 
-        return new AuthResponse(true, user.getEmail(), "Verification code sent to " + user.getEmail());
+        return new AuthResponse(token, new UserSummaryDto(savedUser));
     }
 
     public AuthResponse verifyOtp(VerifyOtpRequest request) {

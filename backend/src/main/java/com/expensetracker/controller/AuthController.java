@@ -27,7 +27,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Map<String, Object>>> getStatus() {
         Map<String, Object> status = new HashMap<>();
         status.put("status", "UP");
-        status.put("version", "1.0.2-async-gmail");
+        status.put("version", "1.0.3-direct-auth");
         status.put("timestamp", LocalDateTime.now());
         return ResponseEntity.ok(ApiResponse.success("AURA API is online", status));
     }
@@ -35,7 +35,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request) {
         AuthResponse response = authService.register(request);
-        return new ResponseEntity<>(ApiResponse.success("Verification code dispatched to your email", response), HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiResponse.success("Account created successfully", response), HttpStatus.CREATED);
     }
 
     @PostMapping("/verify-otp")

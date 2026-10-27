@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IndianRupee } from 'lucide-react';
+import { IndianRupee, Volume2, VolumeX } from 'lucide-react';
 import api from '../services/api';
+import {
+  playCoinClink,
+  playCoinCascade,
+  playVaultActivation,
+  toggleMute,
+  getMuteState
+} from '../utils/soundEffects';
 import './Preloader.css';
 
 /**
@@ -22,6 +29,7 @@ export const Preloader = ({ onFinish }) => {
   const [statusText, setStatusText] = useState('INITIALIZING ENCRYPTED VAULT');
   const [showExitFlare, setShowExitFlare] = useState(false);
   const [isExitTransitioning, setIsExitTransitioning] = useState(false);
+  const [muted, setMuted] = useState(() => getMuteState());
 
   // App readiness coordination
   const isAppReadyRef = useRef(false);
@@ -74,36 +82,58 @@ export const Preloader = ({ onFinish }) => {
     };
   }, []);
 
-  // 3. Orchestrate the cinematic timeline stages
+  // 3. Orchestrate the cinematic timeline stages & procedural money sounds
   useEffect(() => {
     const timers = [];
 
-    // Stage 1 -> 2: 3D Emblem Assembly begins (0.75s)
+    // Stage 1: Initial drifting coin clink (0.35s)
+    timers.push(
+      setTimeout(() => {
+        playCoinClink({ pitch: 1.15, volume: 0.22 });
+      }, 350)
+    );
+
+    // Stage 2: 3D Emblem & Coin Core Assembly + Cascading Coins (0.75s)
     timers.push(
       setTimeout(() => {
         setPhase('ASSEMBLY');
         setStatusText('ASSEMBLING SCULPTURAL EMBLEM');
+        playCoinCascade();
       }, 750)
     );
 
-    // Stage 2 -> 3: Financial Light Trail draws across (1.85s)
+    // Stage 3: Financial Light Trail draws across + Metallic growth chime (1.85s)
     timers.push(
       setTimeout(() => {
         setPhase('TRAIL');
         setStatusText('MAPPING CAPITAL ASCENT');
+        playCoinClink({ pitch: 1.28, volume: 0.26 });
       }, 1850)
     );
 
-    // Stage 3 -> 4: Typography reveal & orbital progress active (2.65s)
+    // Stage 4: Typography reveal & orbital progress active (2.65s)
     timers.push(
       setTimeout(() => {
         setPhase('TYPOGRAPHY');
         setStatusText('CALIBRATING PRECISION VAULT');
+        playCoinClink({ pitch: 1.0, volume: 0.22 });
       }, 2650)
     );
 
+    // First interaction listener to immediately unlock AudioContext if browser held it
+    const handleFirstGesture = () => {
+      playCoinClink({ pitch: 1.1, volume: 0.2 });
+      window.removeEventListener('pointerdown', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
+    };
+
+    window.addEventListener('pointerdown', handleFirstGesture, { once: true });
+    window.addEventListener('keydown', handleFirstGesture, { once: true });
+
     return () => {
       timers.forEach(clearTimeout);
+      window.removeEventListener('pointerdown', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
     };
   }, []);
 
@@ -137,6 +167,10 @@ export const Preloader = ({ onFinish }) => {
     }, 40);
 
     const triggerExitTransition = () => {
+      // Trigger final wealth sound culmination
+      playVaultActivation();
+      playCoinCascade();
+
       // Trigger horizontal anamorphic lens flare
       setShowExitFlare(true);
 
@@ -166,6 +200,38 @@ export const Preloader = ({ onFinish }) => {
       aria-live="polite"
       aria-label="Loading Expense Tracker"
     >
+      {/* Audio Mute/Unmute Indicator & Toggle */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          const next = toggleMute();
+          setMuted(next);
+          if (!next) {
+            playCoinClink({ pitch: 1.2, volume: 0.25 });
+          }
+        }}
+        className="bd-audio-toggle"
+        title={muted ? 'Enable Money Chimes' : 'Mute Sound'}
+      >
+        {muted ? (
+          <>
+            <VolumeX className="w-3.5 h-3.5 text-zinc-500" />
+            <span>MUTED</span>
+          </>
+        ) : (
+          <>
+            <div className="bd-audio-wave">
+              <span className="bd-audio-bar" />
+              <span className="bd-audio-bar" />
+              <span className="bd-audio-bar" />
+            </div>
+            <Volume2 className="w-3.5 h-3.5 text-white" />
+            <span>CHIMES ACTIVE</span>
+          </>
+        )}
+      </button>
+
       {/* Film Grain Texture */}
       <div className="bd-grain-texture" />
 

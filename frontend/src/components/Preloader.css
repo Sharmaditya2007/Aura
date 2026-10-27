@@ -1,0 +1,611 @@
+/* ==========================================================================
+   THE WEALTH PULSE — LUXURY FINTECH PRELOADER STYLESHEET
+   Pure Black (#050505) • Pristine White • Metallic Silver • 3D Motion
+   ========================================================================== */
+
+/* Main Fullscreen Cinematic Overlay */
+.wealth-pulse-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background-color: #050505;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Exit Transition State: Cinematic Mask Dissolve */
+.wealth-pulse-overlay.exit-transition {
+  opacity: 0;
+  clip-path: circle(0% at 50% 50%);
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+/* Subtle Ambient Background Radial Glow */
+.wealth-pulse-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 40%, transparent 70%);
+}
+
+/* Subtle Film Grain Noise Texture Overlay */
+.wealth-pulse-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Atmospheric Floating Micro-Particles */
+.particle-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #ffffff;
+  pointer-events: none;
+  box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.4);
+  animation: particleFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-24px) translateX(12px);
+    opacity: 0.15;
+  }
+}
+
+/* Main Choreography Stage Container */
+.stage-container {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+/* ==========================================================================
+   PHASE 1 & 2: THE LUMINOUS DOT & THE MONEY FLOW SPLINE
+   ========================================================================== */
+
+/* The Initial Center Glowing Dot */
+.center-luminous-dot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 20px 4px rgba(255, 255, 255, 0.95),
+              0 0 45px 12px rgba(255, 255, 255, 0.35);
+  transform: translate(-50%, -50%);
+  animation: dotPulse 1.4s ease-in-out infinite alternate;
+  z-index: 10;
+}
+
+@keyframes dotPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.3);
+    box-shadow: 0 0 35px 8px rgba(255, 255, 255, 1);
+  }
+}
+
+/* The Money Flow SVG Chart */
+.money-flow-chart {
+  position: absolute;
+  width: 100%;
+  max-width: 480px;
+  height: 160px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.flow-path-bg {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: 4 4;
+}
+
+.flow-path-active {
+  stroke: url(#moneyFlowGradient);
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: drawFlowLine 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes drawFlowLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Peak Pulse Markers along the Chart */
+.peak-marker {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #050505;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: markerPing 1.8s ease-out forwards;
+}
+
+.peak-marker::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  animation: markerHalo 1.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes markerPing {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes markerHalo {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   PHASE 3: THE COIN FORMATION (CSS 3D TRANSFORMS)
+   ========================================================================== */
+
+.coin-formation-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  perspective-origin: center center;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.coin-disc {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #a1a1aa 45%, #27272a 80%, #09090b 100%);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.35),
+              inset 0 0 8px rgba(255, 255, 255, 0.7);
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coin-disc::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.5);
+}
+
+.coin-disc-1 {
+  animation: coinConverge1 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.coin-disc-2 {
+  animation: coinConverge2 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.coin-disc-3 {
+  animation: coinConverge3 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.coin-disc-4 {
+  animation: coinConverge4 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.coin-disc-5 {
+  animation: coinConverge5 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes coinConverge1 {
+  0% {
+    transform: translate3d(-140px, -50px, 90px) rotateY(0deg) rotateX(60deg) scale(0.7);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(-15px, -8px, 15px) rotateY(360deg) rotateX(15deg) scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(540deg) rotateX(0deg) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes coinConverge2 {
+  0% {
+    transform: translate3d(140px, -70px, -80px) rotateY(180deg) rotateX(-45deg) scale(0.65);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(12px, -6px, -10px) rotateY(540deg) rotateX(-10deg) scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(720deg) rotateX(0deg) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes coinConverge3 {
+  0% {
+    transform: translate3d(-90px, 80px, 50px) rotateY(-120deg) rotateX(40deg) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(-8px, 10px, 8px) rotateY(240deg) rotateX(10deg) scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(360deg) rotateX(0deg) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes coinConverge4 {
+  0% {
+    transform: translate3d(110px, 60px, 70px) rotateY(90deg) rotateX(-50deg) scale(0.7);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(10px, 5px, 12px) rotateY(450deg) rotateX(-15deg) scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(630deg) rotateX(0deg) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes coinConverge5 {
+  0% {
+    transform: translate3d(0px, -110px, -40px) rotateY(-270deg) rotateX(70deg) scale(0.75);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(0, -10px, -5px) rotateY(90deg) rotateX(15deg) scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(180deg) rotateX(0deg) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Convergence Spark Flash upon assembly */
+.convergence-flash {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.2) 40%, transparent 70%);
+  animation: flashBurst 0.6s ease-out forwards;
+  pointer-events: none;
+  z-index: 18;
+}
+
+@keyframes flashBurst {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   PHASE 4: MINIMAL CUSTOM FINANCE EMBLEM & LOGO REVEAL
+   ========================================================================== */
+
+.logo-reveal-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 20;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-reveal-group.elevate-exit {
+  transform: translateY(-26px);
+}
+
+/* Luxury Financial Emblem */
+.fintech-luxury-emblem {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Outer Orbit Accent Ring */
+.emblem-outer-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  animation: emblemOrbit 16s linear infinite;
+}
+
+@keyframes emblemOrbit {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Emblem Core Shield */
+.emblem-core-shield {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #18181b 0%, #0d0d0f 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.14),
+              inset 0 1px 1px rgba(255, 255, 255, 0.4),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Subtle Silver Sheen Reflection on Shield */
+.emblem-core-shield::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%, rgba(255, 255, 255, 0.05) 100%);
+  pointer-events: none;
+}
+
+/* Precision Rupee Glyph within Core */
+.emblem-rupee-glyph {
+  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.75));
+  z-index: 2;
+}
+
+/* Brand Name Typography */
+.brand-name-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 40%, #ffffff 65%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.2));
+  padding-left: 0.35em; /* Optical center balance for tracking */
+}
+
+@media (max-width: 640px) {
+  .brand-name-title {
+    font-size: 17px;
+    letter-spacing: 0.3em;
+    padding-left: 0.3em;
+  }
+}
+
+/* Tagline Typography */
+.brand-tagline {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8e8e93;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ==========================================================================
+   PHASE 5: THE FINANCIAL PULSE & DYNAMIC PERCENTAGE
+   ========================================================================== */
+
+.financial-pulse-container {
+  width: 100%;
+  max-width: 260px;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Laser Pulse Track */
+.pulse-track {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background-color: #1c1c1f;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* Luminous Traveling Progress Bar */
+.pulse-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, #ffffff 85%, #ffffff 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+              0 0 20px rgba(255, 255, 255, 0.3);
+  transition: width 0.1s linear;
+}
+
+/* Luminous Head Spark */
+.pulse-spark {
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translateY(-50%);
+  box-shadow: 0 0 12px 3px rgba(255, 255, 255, 1);
+}
+
+/* Digital Readout Bar */
+.pulse-readout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: #71717a;
+}
+
+.pulse-status {
+  color: #a1a1aa;
+  transition: color 0.3s ease;
+}
+
+.pulse-percentage {
+  color: #ffffff;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+/* ==========================================================================
+   PHASE 6: CINEMATIC DIAGONAL LIGHT SWEEP
+   ========================================================================== */
+
+.diagonal-light-sweep {
+  position: absolute;
+  inset: -100%;
+  background: linear-gradient(
+    130deg,
+    transparent 42%,
+    rgba(255, 255, 255, 0.04) 47%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.04) 53%,
+    transparent 58%
+  );
+  pointer-events: none;
+  z-index: 30;
+  animation: lightSweep 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes lightSweep {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    transform: translate(50%, 50%);
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: PREFERS-REDUCED-MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .wealth-pulse-overlay {
+    transition: opacity 0.2s ease !important;
+  }
+  .particle,
+  .flow-path-active,
+  .coin-disc,
+  .emblem-outer-ring,
+  .diagonal-light-sweep {
+    animation: none !important;
+  }
+}

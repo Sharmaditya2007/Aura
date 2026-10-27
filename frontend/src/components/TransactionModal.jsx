@@ -22,8 +22,9 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
     setIsDeleting(true);
     try {
       await api.delete(`/transactions/${initialData.id}`);
-      onSuccess();
-      onClose();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
+      if (typeof onSuccess === 'function') onSuccess();
+      if (typeof onClose === 'function') onClose();
     } catch (err) {
       const msg = err.response?.data?.message || err.response?.data?.error || 'Failed to delete transaction';
       setError(msg);
@@ -122,8 +123,9 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
       } else {
         await api.post('/transactions', payload);
       }
-      onSuccess();
-      onClose();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
+      if (typeof onSuccess === 'function') onSuccess();
+      if (typeof onClose === 'function') onClose();
     } catch (err) {
       const msg = err.response?.data?.message || err.response?.data?.error || 'Failed to save transaction';
       setError(msg);

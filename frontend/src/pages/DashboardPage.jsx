@@ -530,7 +530,10 @@ export const DashboardPage = () => {
           setIsModalOpen(false);
           setEditingTransaction(null);
         }}
-        onSuccess={fetchData}
+        onSuccess={() => {
+          fetchData();
+          window.dispatchEvent(new Event('aura:transaction-updated'));
+        }}
       />
     </div>
   );

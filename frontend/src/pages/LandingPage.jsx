@@ -104,7 +104,7 @@ export const LandingPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-base sm:text-lg text-[#A3A3A3] max-w-2xl mx-auto mb-8 font-normal leading-relaxed"
             >
-              Institutional-grade ledger tracking, automated category guardrails, and real MongoDB Atlas persistence inside an uncompromising 3D workspace.
+              Institutional-grade ledger tracking, automated category guardrails, and real-time wealth analytics inside an uncompromising 3D workspace.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -134,17 +134,17 @@ export const LandingPage = () => {
             <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] font-mono text-[#737373]">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-white/70" />
-                <span>100% Isolated Tenancy</span>
+                <span>100% Private & Encrypted</span>
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <Shield className="w-3.5 h-3.5 text-white/70" />
-                <span>MongoDB Atlas Native</span>
+                <span>Bank-Grade Security</span>
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <Activity className="w-3.5 h-3.5 text-white/70" />
-                <span>Decimal128 Precision</span>
+                <span>Real-Time Analytics</span>
               </span>
             </div>
           </div>
@@ -391,9 +391,9 @@ export const LandingPage = () => {
                 <Shield className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white mb-2">Isolated Tenancy & Role Security</h3>
+                <h3 className="text-lg font-bold text-white mb-2">Private Tenancy & Access Control</h3>
                 <p className="text-xs text-[#A3A3A3] leading-relaxed">
-                  Your financial ledger is strictly isolated by user ID in MongoDB. Full administrator console with audit logs.
+                  Your financial ledger is strictly private and encrypted. Protected with role-based access controls and audit security.
                 </p>
               </div>
             </div>
@@ -540,7 +540,7 @@ export const LandingPage = () => {
             Built with Zero Compromise
           </h2>
           <p className="text-sm text-[#A3A3A3] leading-relaxed max-w-2xl mx-auto mb-10">
-            AURA Finance never sells user data, never uses external analytics trackers, and enforces server-side tenant isolation on every single MongoDB query.
+            AURA Finance never sells user data, never uses external analytics trackers, and enforces zero-knowledge privacy and strict cryptographic protection on every transaction.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">

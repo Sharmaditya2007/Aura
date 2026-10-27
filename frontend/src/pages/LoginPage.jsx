@@ -35,8 +35,12 @@ export const LoginPage = () => {
         navigate('/dashboard');
       }
     } catch (err) {
-      const msg = err.response?.data?.message || err.message || 'Invalid credentials. Please try again.';
-      setError(msg);
+      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+        setError('Server is warming up from inactivity. Please wait 10 seconds and try again.');
+      } else {
+        const msg = err.response?.data?.message || err.message || 'Invalid credentials. Please try again.';
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }

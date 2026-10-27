@@ -52,8 +52,14 @@ export const RegisterPage = () => {
       await register(fullName, email, password, confirmPassword);
       navigate('/dashboard');
     } catch (err) {
-      const msg = err.response?.data?.message || err.message || 'Registration failed. Please check inputs.';
-      setError(msg);
+      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+        setError('Server cold-start timed out. Please try signing in now, as your account may have already been configured.');
+      } else if (err.response?.status === 409 || err.message?.toLowerCase().includes('already exists')) {
+        setError('An account with this email address already exists. Please sign in below.');
+      } else {
+        const msg = err.response?.data?.message || err.message || 'Registration failed. Please check inputs.';
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }

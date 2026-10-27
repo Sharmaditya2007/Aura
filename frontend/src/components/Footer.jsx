@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IndianRupee, Shield, Cpu, Lock } from 'lucide-react';
+import { IndianRupee, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Footer = () => {
@@ -9,9 +9,9 @@ export const Footer = () => {
   return (
     <footer className="bg-[#080808] border-t border-[#292929] pt-16 pb-12 text-[#A3A3A3]">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand Info */}
-          <div className="md:col-span-1">
+          <div className="max-w-sm">
             <Link to="/" className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-lg bg-[#171717] border border-[#292929] flex items-center justify-center text-white">
                 <IndianRupee className="w-4 h-4 text-white" />
@@ -19,11 +19,11 @@ export const Footer = () => {
               <span className="text-base font-bold tracking-wider text-white">AURA FINANCE</span>
             </Link>
             <p className="text-sm leading-relaxed text-[#737373] mb-4">
-              Precision personal finance manager with high-end architecture, real MongoDB persistence, and zero compromise.
+              Precision personal finance platform designed for clarity, intelligent budgeting, and complete financial control.
             </p>
-            <div className="flex items-center gap-2 text-xs text-[#525252] font-mono">
-              <Lock className="w-3.5 h-3.5 text-white/50" />
-              <span>256-bit BCrypt + JWT Security</span>
+            <div className="flex items-center gap-2 text-xs text-[#737373] font-mono">
+              <Shield className="w-3.5 h-3.5 text-white/50" />
+              <span>Enterprise-Grade Security & Privacy</span>
             </div>
           </div>
 
@@ -59,22 +59,10 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Architecture */}
-          <div>
-            <h4 className="text-xs uppercase font-mono tracking-widest text-white mb-4">Architecture</h4>
-            <ul className="space-y-2.5 text-sm text-[#737373]">
-              <li>Java 17 + Spring Boot 3</li>
-              <li>Spring Data MongoDB (Decimal128)</li>
-              <li>Spring Security 6 (Stateless JWT)</li>
-              <li>React 18 + Vite + Tailwind CSS</li>
-              <li>Scheduled Transaction Automation</li>
-            </ul>
-          </div>
-
           {/* Direct Access */}
           <div>
             <h4 className="text-xs uppercase font-mono tracking-widest text-white mb-4">Direct Access</h4>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 max-w-xs">
               {isAuthenticated ? (
                 <>
                   <Link
@@ -112,11 +100,13 @@ export const Footer = () => {
 
         {/* Bottom bar */}
         <div className="pt-8 border-t border-[#292929]/50 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-[#525252]">
-          <p>© {new Date().getFullYear()} AURA Finance. All database transactions strictly isolated per user.</p>
+          <p>© {new Date().getFullYear()} AURA Finance. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <span>Production Grade REST API</span>
+            <span className="hover:text-white transition-colors cursor-pointer">Privacy</span>
             <span>•</span>
-            <span>MongoDB Compass Compatible</span>
+            <span className="hover:text-white transition-colors cursor-pointer">Terms</span>
+            <span>•</span>
+            <span className="hover:text-white transition-colors cursor-pointer">Security</span>
           </div>
         </div>
       </div>

@@ -10,7 +10,6 @@ import {
   PieChart,
   Repeat,
   BarChart3,
-  Settings,
   ShieldCheck,
   LogOut,
   X,
@@ -35,7 +34,6 @@ export const Sidebar = ({ isOpen, onClose }) => {
     { to: '/budgets', label: 'Budgets', icon: PieChart },
     { to: '/recurring', label: 'Recurring', icon: Repeat },
     { to: '/reports', label: 'Reports & Analytics', icon: BarChart3 },
-    { to: '/settings', label: 'Settings', icon: Settings },
   ];
 
   return (

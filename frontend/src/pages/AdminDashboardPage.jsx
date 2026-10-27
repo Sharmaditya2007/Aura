@@ -20,7 +20,7 @@ import {
   X,
   TrendingUp,
   TrendingDown,
-  DollarSign
+  IndianRupee
 } from 'lucide-react';
 
 export const AdminDashboardPage = () => {
@@ -213,7 +213,7 @@ export const AdminDashboardPage = () => {
             <MetricCard
               title="Aggregate Volume"
               amount={summary?.aggregateExpenseVolume || 0}
-              icon={DollarSign}
+              icon={IndianRupee}
               subtitle="Total logged application spending"
             />
           </>

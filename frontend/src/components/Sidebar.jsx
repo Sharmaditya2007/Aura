@@ -14,7 +14,7 @@ import {
   ShieldCheck,
   LogOut,
   X,
-  DollarSign
+  IndianRupee
 } from 'lucide-react';
 
 export const Sidebar = ({ isOpen, onClose }) => {
@@ -58,7 +58,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
         <div className="h-20 px-6 flex items-center justify-between border-b border-[#292929]">
           <NavLink to="/dashboard" className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#171717] border border-[#292929] flex items-center justify-center text-white">
-              <DollarSign className="w-5 h-5 text-white" />
+              <IndianRupee className="w-5 h-5 text-white" />
             </div>
             <div>
               <div className="font-bold tracking-wider text-white text-base">AURA</div>

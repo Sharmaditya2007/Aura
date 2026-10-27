@@ -15,7 +15,8 @@ import {
   Sparkles,
   Layers,
   CheckCircle2,
-  DollarSign
+  IndianRupee,
+  AlertTriangle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -61,7 +62,7 @@ export const LandingPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-base sm:text-xl text-[#A3A3A3] leading-relaxed max-w-2xl mx-auto mb-10"
             >
-              Track every dollar of income, allocate category budgets with automated threshold warnings, and schedule recurring cash flows inside an uncompromising black-and-white fintech workspace.
+              Track every rupee of income, allocate category budgets with automated threshold warnings, and schedule recurring cash flows inside an uncompromising black-and-white fintech workspace.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -326,6 +327,96 @@ export const LandingPage = () => {
         </div>
       </section>
 
+      {/* Budgeting & Threshold Alerts Showcase Section */}
+      <section id="budgeting" className="py-24 border-t border-[#292929] bg-[#0a0a0a]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#737373]">Budget Intelligence</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-2 mb-4 tracking-tight">
+              Category Budgets & Real-Time Warning Thresholds
+            </h2>
+            <p className="text-sm text-[#A3A3A3] leading-relaxed">
+              Define monthly spending caps for each expense category. Get visual and notification alerts before you overspend.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+            {/* Budget Card 1 - Normal */}
+            <div className="p-6 rounded-2xl bg-[#141414] border border-[#262626] flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-mono uppercase tracking-wider text-[#737373]">Groceries & Dining</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-fintech-greenSubtle text-fintech-green border border-fintech-green/30">
+                    SAFE (58%)
+                  </span>
+                </div>
+                <div className="text-2xl font-bold font-mono text-white mb-1">₹14,500.00</div>
+                <p className="text-xs text-[#737373] mb-4">of ₹25,000.00 monthly limit</p>
+                <div className="w-full h-2 rounded-full bg-[#222222] overflow-hidden">
+                  <div className="h-full bg-white rounded-full transition-all" style={{ width: '58%' }} />
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-[#222222] text-[11px] font-mono text-[#525252] flex justify-between">
+                <span>Threshold: 80%</span>
+                <span>₹10,500.00 remaining</span>
+              </div>
+            </div>
+
+            {/* Budget Card 2 - Warning */}
+            <div className="p-6 rounded-2xl bg-[#141414] border border-[#383838] flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-mono uppercase tracking-wider text-[#737373]">Shopping & Apparel</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 flex items-center gap-1">
+                    <AlertTriangle className="w-3 h-3" /> WARNING (86%)
+                  </span>
+                </div>
+                <div className="text-2xl font-bold font-mono text-white mb-1">₹17,200.00</div>
+                <p className="text-xs text-[#737373] mb-4">of ₹20,000.00 monthly limit</p>
+                <div className="w-full h-2 rounded-full bg-[#222222] overflow-hidden">
+                  <div className="h-full bg-yellow-400 rounded-full transition-all" style={{ width: '86%' }} />
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-[#222222] text-[11px] font-mono text-yellow-400/80 flex justify-between">
+                <span>Alert Triggered</span>
+                <span>₹2,800.00 remaining</span>
+              </div>
+            </div>
+
+            {/* Budget Card 3 - Target */}
+            <div className="p-6 rounded-2xl bg-[#141414] border border-[#262626] flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-mono uppercase tracking-wider text-[#737373]">Housing & Utilities</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-fintech-greenSubtle text-fintech-green border border-fintech-green/30">
+                    SAFE (70%)
+                  </span>
+                </div>
+                <div className="text-2xl font-bold font-mono text-white mb-1">₹35,000.00</div>
+                <p className="text-xs text-[#737373] mb-4">of ₹50,000.00 monthly limit</p>
+                <div className="w-full h-2 rounded-full bg-[#222222] overflow-hidden">
+                  <div className="h-full bg-white rounded-full transition-all" style={{ width: '70%' }} />
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-[#222222] text-[11px] font-mono text-[#525252] flex justify-between">
+                <span>Threshold: 85%</span>
+                <span>₹15,000.00 remaining</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link
+              to={isAuthenticated ? '/budgets' : '/register'}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black font-semibold text-xs hover:bg-white/90 transition-all shadow-sm"
+            >
+              <span>{isAuthenticated ? 'Manage Your Budgets' : 'Start Budgeting in AURA'}</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Security Section */}
       <section id="security" className="py-24 border-t border-[#292929] bg-[#0c0c0c]">
         <div className="max-w-5xl mx-auto px-6 text-center">
@@ -377,16 +468,16 @@ export const LandingPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              to="/register"
+              to={isAuthenticated ? '/dashboard' : '/register'}
               className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white text-black font-bold text-sm hover:bg-white/90 transition-all shadow-[0_0_25px_rgba(255,255,255,0.2)]"
             >
-              Create Your Free Account
+              {isAuthenticated ? 'Open Dashboard' : 'Create Your Free Account'}
             </Link>
             <Link
-              to="/login"
+              to={isAuthenticated ? '/transactions' : '/login'}
               className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#171717] border border-[#2e2e2e] text-white font-semibold text-sm hover:border-white/50 transition-all"
             >
-              Sign In to Existing Ledger
+              {isAuthenticated ? 'View Transaction Ledger' : 'Sign In to Existing Ledger'}
             </Link>
           </div>
         </div>

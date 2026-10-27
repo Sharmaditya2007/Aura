@@ -38,15 +38,20 @@ export const SettingsPage = () => {
     setPwdSuccess('');
 
     try {
-      // In our architecture, forgot-password/reset-password handles token reset,
-      // or we can invoke our reset endpoint with a newly generated token
-      setPwdSuccess('Password update mechanism configured. For security verification, you can also use Reset Password.');
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-      setTimeout(() => setPwdSuccess(''), 5000);
+      const res = await api.post('/auth/change-password', {
+        currentPassword,
+        newPassword,
+        confirmPassword
+      });
+      if (res.data?.success) {
+        setPwdSuccess('Your password has been changed successfully.');
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+        setTimeout(() => setPwdSuccess(''), 6000);
+      }
     } catch (err) {
-      setPwdError('Could not update password. Please check your current password.');
+      setPwdError(err.response?.data?.message || 'Could not update password. Please check your current password.');
     } finally {
       setPwdLoading(false);
     }
@@ -97,6 +102,82 @@ export const SettingsPage = () => {
             </span>
           </div>
         </div>
+      </div>
+
+      {/* Change Password Card */}
+      <div className="fintech-card p-6 space-y-4">
+        <div className="flex items-center gap-2.5 mb-2">
+          <KeyRound className="w-4 h-4 text-white" />
+          <h3 className="text-sm font-bold text-white">Update Account Password</h3>
+        </div>
+
+        {pwdSuccess && (
+          <div className="p-3.5 rounded-xl bg-fintech-greenSubtle border border-fintech-green/30 text-xs font-mono text-fintech-green flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span>{pwdSuccess}</span>
+          </div>
+        )}
+
+        {pwdError && (
+          <div className="p-3.5 rounded-xl bg-fintech-redSubtle border border-fintech-red/30 text-xs font-mono text-fintech-red">
+            {pwdError}
+          </div>
+        )}
+
+        <form onSubmit={handlePasswordChange} className="space-y-4 max-w-md">
+          <div>
+            <label className="block text-xs font-mono uppercase text-[#A3A3A3] mb-1.5">
+              Current Password
+            </label>
+            <input
+              type="password"
+              required
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="••••••••"
+              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors font-mono"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-mono uppercase text-[#A3A3A3] mb-1.5">
+                New Password
+              </label>
+              <input
+                type="password"
+                required
+                minLength={6}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors font-mono"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-mono uppercase text-[#A3A3A3] mb-1.5">
+                Confirm New Password
+              </label>
+              <input
+                type="password"
+                required
+                minLength={6}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors font-mono"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={pwdLoading}
+            className="px-5 py-2.5 rounded-xl bg-white text-black font-semibold text-xs hover:bg-white/90 disabled:opacity-50 transition-all flex items-center gap-2"
+          >
+            {pwdLoading ? 'Updating Password...' : 'Save New Password'}
+          </button>
+        </form>
       </div>
 
       {/* System & Database Architecture Card */}

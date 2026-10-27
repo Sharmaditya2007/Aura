@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Check, Repeat, Calendar, DollarSign } from 'lucide-react';
+import { X, Check, Repeat, Calendar } from 'lucide-react';
 import api from '../services/api';
 
 export const RecurringModal = ({ isOpen, onClose, onSuccess, initialData = null }) => {

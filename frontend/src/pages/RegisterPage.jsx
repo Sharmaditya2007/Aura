@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Eye, EyeOff, Lock, Mail, User, ArrowRight, DollarSign, Check, X } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, User, ArrowRight, IndianRupee, Check, X } from 'lucide-react';
 
 export const RegisterPage = () => {
   const { register } = useAuth();
@@ -65,7 +65,7 @@ export const RegisterPage = () => {
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#171717] border border-[#292929] flex items-center justify-center text-white">
-            <DollarSign className="w-5 h-5 text-white" />
+            <IndianRupee className="w-5 h-5 text-white" />
           </div>
           <span className="text-lg font-bold tracking-wider text-white">AURA FINANCE</span>
         </Link>

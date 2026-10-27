@@ -146,6 +146,30 @@ public class AuthService {
         );
     }
 
+    public void changePassword(String userId, ChangePasswordRequest request) {
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new BadRequestException("New passwords do not match");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new BadRequestException("Current password does not match");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
+
+        notificationService.createNotification(
+                user.getId(),
+                "Password Changed",
+                "Your account password was updated successfully via Account Settings.",
+                NotificationType.SYSTEM
+        );
+    }
+
     public UserSummaryDto getCurrentUser(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));

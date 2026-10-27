@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Lock, Eye, EyeOff, ArrowRight, DollarSign, CheckCircle2 } from 'lucide-react';
+import { Lock, Eye, EyeOff, ArrowRight, IndianRupee, CheckCircle2 } from 'lucide-react';
 import api from '../services/api';
 
 export const ResetPasswordPage = () => {
@@ -57,7 +57,7 @@ export const ResetPasswordPage = () => {
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#171717] border border-[#292929] flex items-center justify-center text-white">
-            <DollarSign className="w-5 h-5 text-white" />
+            <IndianRupee className="w-5 h-5 text-white" />
           </div>
           <span className="text-lg font-bold tracking-wider text-white">AURA FINANCE</span>
         </Link>

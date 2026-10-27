@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, Bell, Plus, Check, Trash2, ArrowUpRight, DollarSign } from 'lucide-react';
+import { Menu, Bell, Plus, Check, Trash2, ArrowUpRight } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 

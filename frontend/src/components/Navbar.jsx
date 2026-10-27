@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Menu, X, ArrowUpRight, DollarSign } from 'lucide-react';
+import { Menu, X, ArrowUpRight, IndianRupee } from 'lucide-react';
 
 export const Navbar = () => {
   const { isAuthenticated, user } = useAuth();
@@ -13,7 +13,7 @@ export const Navbar = () => {
         {/* Brand */}
         <Link to="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-xl bg-[#171717] border border-[#292929] flex items-center justify-center text-white group-hover:border-white/50 transition-colors">
-            <DollarSign className="w-5 h-5 text-white" />
+            <IndianRupee className="w-5 h-5 text-white" />
           </div>
           <div className="flex flex-col">
             <span className="text-lg font-bold tracking-wider text-white font-sans flex items-center gap-1.5">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, DollarSign, Calendar, Tag, CreditCard, AlignLeft, Check } from 'lucide-react';
+import { X, Calendar, Tag, CreditCard, AlignLeft, Check } from 'lucide-react';
 import api from '../services/api';
 
 export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = null }) => {

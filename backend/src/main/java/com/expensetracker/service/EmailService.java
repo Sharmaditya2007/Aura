@@ -75,9 +75,13 @@ public class EmailService {
                     "<p style='color:#52525b;font-size:11px;margin:0;font-family:monospace;'>AURA Finance &bull; End-to-End Tenancy &bull; Bank-Grade Security</p>" +
                     "</div></body></html>";
 
-            helper.setText(html, true);
+            String plainText = "Hello " + userName + ",\n\n" +
+                    "Your AURA Finance 6-digit verification code is: " + otpCode + "\n\n" +
+                    "This code will expire in 10 minutes.\n\n" +
+                    "— The AURA Finance Team";
+            helper.setText(plainText, html);
             mailSender.send(mimeMessage);
-            log.info("Luxury HTML OTP email successfully dispatched to {}", to);
+            log.info("Luxury HTML OTP email successfully dispatched to {}. Security Code: {}", to, otpCode);
         } catch (Exception e) {
             log.error("Failed to send HTML OTP email to {}: {}. Sending text fallback.", to, e.getMessage());
             sendEmail(to, "AURA Finance — Verification Code: " + otpCode,

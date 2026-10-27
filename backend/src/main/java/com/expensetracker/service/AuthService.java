@@ -11,6 +11,8 @@ import com.expensetracker.model.UserStatus;
 import com.expensetracker.repository.UserRepository;
 import com.expensetracker.security.JwtTokenProvider;
 import com.expensetracker.security.UserPrincipal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import java.util.UUID;
 
 @Service
 public class AuthService {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -81,6 +85,7 @@ public class AuthService {
         user.setEmailVerified(false);
 
         userRepository.save(user);
+        log.info(">>> GENERATED 6-DIGIT OTP FOR {}: {} <<<", user.getEmail(), otp);
 
         // Dispatch Email
         emailService.sendRegistrationOtpEmail(user.getEmail(), user.getFullName(), otp);
@@ -142,6 +147,7 @@ public class AuthService {
         user.setVerificationOtpExpiresAt(LocalDateTime.now().plusMinutes(10));
         user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
+        log.info(">>> RESENT 6-DIGIT OTP FOR {}: {} <<<", user.getEmail(), otp);
 
         emailService.sendRegistrationOtpEmail(user.getEmail(), user.getFullName(), otp);
     }

@@ -27,13 +27,17 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      const isAuthEndpoint = error.config.url && error.config.url.includes('/auth/');
-      if (!isAuthEndpoint) {
-        localStorage.removeItem('aura_token');
-        localStorage.removeItem('aura_user');
-        if (window.location.pathname !== '/login') {
-          window.location.href = '/login?expired=true';
-        }
+      const isAuthEndpoint = error.config?.url && error.config.url.includes('/auth/');
+      const hadToken = !!localStorage.getItem('aura_token');
+      localStorage.removeItem('aura_token');
+      localStorage.removeItem('aura_user');
+
+      // Never redirect to login if the user is on the homepage or public auth routes
+      const publicPaths = ['/', '/login', '/register', '/forgot-password', '/reset-password'];
+      const isPublicPath = publicPaths.includes(window.location.pathname);
+
+      if (!isAuthEndpoint && hadToken && !isPublicPath) {
+        window.location.href = '/login?expired=true';
       }
     }
     return Promise.reject(error);

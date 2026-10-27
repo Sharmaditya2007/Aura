@@ -47,11 +47,8 @@ export const Preloader = ({ onFinish }) => {
       try {
         const storedToken = localStorage.getItem('aura_token');
         if (storedToken) {
-          // Verify JWT session against backend
+          // Verify JWT session against backend if token exists
           await api.get('/auth/me', { timeout: 3500 });
-        } else {
-          // Verify public API connectivity for visitors
-          await api.get('/categories', { timeout: 3000 }).catch(() => null);
         }
       } catch (err) {
         // Non-blocking fault tolerance: never strand the user

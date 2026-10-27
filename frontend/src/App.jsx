@@ -21,13 +21,9 @@ import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { SettingsPage } from './pages/SettingsPage';
 
 export function App() {
-  const [showPreloader, setShowPreloader] = useState(() => {
-    // Only show full preloader on initial website visit
-    return !sessionStorage.getItem('aura_preloaded');
-  });
+  const [showPreloader, setShowPreloader] = useState(true);
 
   const handlePreloaderFinish = () => {
-    sessionStorage.setItem('aura_preloaded', 'true');
     setShowPreloader(false);
   };
 

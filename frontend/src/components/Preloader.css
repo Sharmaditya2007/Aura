@@ -922,6 +922,59 @@
   100% { transform: scaleY(1); }
 }
 
+/* Interactive Sound Prompt Pill */
+.bd-audio-prompt-container {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.bd-audio-prompt-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(18, 18, 22, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
+}
+
+.bd-audio-prompt-pill:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+}
+
+.bd-audio-prompt-pill.pulse {
+  animation: promptPulse 1.8s infinite ease-in-out;
+}
+
+.bd-audio-prompt-pill.unlocked {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(6, 78, 59, 0.35);
+}
+
+@keyframes promptPulse {
+  0%, 100% {
+    transform: scale(1);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    transform: scale(1.04);
+    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+  }
+}
+
 /* ==========================================================================
    ACCESSIBILITY: PREFERS-REDUCED-MOTION
    ========================================================================== */

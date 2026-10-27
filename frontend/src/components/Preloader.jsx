@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IndianRupee, Volume2, VolumeX } from 'lucide-react';
+import { IndianRupee, Volume2, VolumeX, Sparkles } from 'lucide-react';
 import api from '../services/api';
 import {
+  unlockAudio,
   playCoinClink,
   playCoinCascade,
+  playChaChing,
   playVaultActivation,
   toggleMute,
   getMuteState
@@ -30,6 +32,15 @@ export const Preloader = ({ onFinish }) => {
   const [showExitFlare, setShowExitFlare] = useState(false);
   const [isExitTransitioning, setIsExitTransitioning] = useState(false);
   const [muted, setMuted] = useState(() => getMuteState());
+  const [audioUnlocked, setAudioUnlocked] = useState(false);
+
+  const handleInteraction = async () => {
+    const success = await unlockAudio();
+    if (success) {
+      setAudioUnlocked(true);
+      playChaChing();
+    }
+  };
 
   // App readiness coordination
   const isAppReadyRef = useRef(false);
@@ -199,16 +210,19 @@ export const Preloader = ({ onFinish }) => {
       role="status"
       aria-live="polite"
       aria-label="Loading Expense Tracker"
+      onClick={handleInteraction}
+      onPointerDown={handleInteraction}
     >
       {/* Audio Mute/Unmute Indicator & Toggle */}
       <button
         type="button"
         onClick={(e) => {
           e.stopPropagation();
+          unlockAudio();
           const next = toggleMute();
           setMuted(next);
           if (!next) {
-            playCoinClink({ pitch: 1.2, volume: 0.25 });
+            playChaChing();
           }
         }}
         className="bd-audio-toggle"
@@ -227,10 +241,38 @@ export const Preloader = ({ onFinish }) => {
               <span className="bd-audio-bar" />
             </div>
             <Volume2 className="w-3.5 h-3.5 text-white" />
-            <span>CHIMES ACTIVE</span>
+            <span>{audioUnlocked ? 'AUDIO ACTIVE' : 'UNMUTE'}</span>
           </>
         )}
       </button>
+
+      {/* Interactive Sound Activation Pill */}
+      <div className="bd-audio-prompt-container">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleInteraction();
+          }}
+          className={`bd-audio-prompt-pill ${audioUnlocked ? 'unlocked' : 'pulse'}`}
+        >
+          {audioUnlocked ? (
+            <>
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-emerald-300 font-mono text-[11px] tracking-wider font-bold">
+                COIN AUDIO ACTIVE • CLICK FOR CHIME
+              </span>
+            </>
+          ) : (
+            <>
+              <Volume2 className="w-3.5 h-3.5 text-white animate-bounce" />
+              <span className="text-white font-mono text-[11px] tracking-wider font-semibold">
+                TAP ANYWHERE FOR COIN SOUNDS 🔊
+              </span>
+            </>
+          )}
+        </button>
+      </div>
 
       {/* Film Grain Texture */}
       <div className="bd-grain-texture" />

@@ -12,7 +12,6 @@ import {
   FileSpreadsheet,
   Lock,
   ArrowUpRight,
-  Sparkles,
   Layers,
   CheckCircle2,
   IndianRupee,
@@ -34,36 +33,15 @@ export const LandingPage = () => {
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            {/* Pill Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#171717] border border-[#2e2e2e] text-xs font-mono text-[#A3A3A3] mb-6 shadow-sm"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-white" />
-              <span>AURA FINANCE OS v1.0 • PRECISION LEDGER</span>
-            </motion.div>
-
             {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08] mb-6"
+              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08] mb-10"
             >
               Take Control of Your Money.
             </motion.h1>
-
-            {/* Supporting Text */}
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-base sm:text-xl text-[#A3A3A3] leading-relaxed max-w-2xl mx-auto mb-10"
-            >
-              Track every rupee of income, allocate category budgets with automated threshold warnings, and schedule recurring cash flows inside an uncompromising black-and-white fintech workspace.
-            </motion.p>
 
             {/* CTA Buttons */}
             <motion.div

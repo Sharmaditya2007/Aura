@@ -18,7 +18,9 @@ import {
   CreditCard,
   ChevronRight,
   AlertTriangle,
-  Receipt
+  Receipt,
+  Edit2,
+  Trash2
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -43,6 +45,23 @@ export const DashboardPage = () => {
   const [recurring, setRecurring] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const handleDeleteTransaction = async () => {
+    if (!deletingId) return;
+    setDeleteLoading(true);
+    try {
+      await api.delete(`/transactions/${deletingId}`);
+      setDeletingId(null);
+      fetchData();
+    } catch (err) {
+      console.error('Failed to delete transaction:', err);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
 
   const fetchData = async () => {
     try {
@@ -330,13 +349,34 @@ export const DashboardPage = () => {
                       </div>
                     </div>
 
-                    <div className="text-right shrink-0">
-                      <div
-                        className={`text-sm font-mono font-bold ${
-                          isExpense ? 'text-white' : 'text-fintech-green'
-                        }`}
-                      >
-                        {isExpense ? '-' : '+'}{formatINR(tx.amount)}
+                    <div className="flex items-center gap-3 shrink-0">
+                      <div className="text-right">
+                        <div
+                          className={`text-sm font-mono font-bold ${
+                            isExpense ? 'text-white' : 'text-fintech-green'
+                          }`}
+                        >
+                          {isExpense ? '-' : '+'}{formatINR(tx.amount)}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => {
+                            setEditingTransaction(tx);
+                            setIsModalOpen(true);
+                          }}
+                          className="p-1.5 rounded-lg text-[#737373] hover:text-white hover:bg-[#262626] transition-colors"
+                          title="Edit Transaction"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => setDeletingId(tx.id)}
+                          className="p-1.5 rounded-lg text-[#737373] hover:text-fintech-red hover:bg-fintech-redSubtle transition-colors"
+                          title="Delete Transaction"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -442,10 +482,44 @@ export const DashboardPage = () => {
         </div>
       </div>
 
-      {/* Transaction Modal */}
+      {/* Delete Confirmation Modal */}
+      {deletingId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-sm bg-[#141414] border border-[#2e2e2e] rounded-2xl p-6 shadow-2xl space-y-4">
+            <h3 className="text-base font-bold text-white">Delete Transaction</h3>
+            <p className="text-xs text-[#A3A3A3] leading-relaxed">
+              Are you sure you want to remove this record from your ledger? This action cannot be undone.
+            </p>
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setDeletingId(null)}
+                disabled={deleteLoading}
+                className="px-4 py-2 rounded-xl border border-[#292929] text-xs font-semibold text-[#A3A3A3] hover:text-white"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteTransaction}
+                disabled={deleteLoading}
+                className="px-5 py-2 rounded-xl bg-fintech-red text-white text-xs font-bold hover:bg-fintech-red/90 disabled:opacity-50"
+              >
+                {deleteLoading ? 'Deleting...' : 'Confirm Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Transaction Modal (Add / Edit) */}
       <TransactionModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        initialData={editingTransaction}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingTransaction(null);
+        }}
         onSuccess={fetchData}
       />
     </div>

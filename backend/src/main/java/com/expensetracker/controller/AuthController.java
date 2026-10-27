@@ -27,7 +27,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Map<String, Object>>> getStatus() {
         Map<String, Object> status = new HashMap<>();
         status.put("status", "UP");
-        status.put("version", "1.0.3-direct-auth");
+        status.put("version", "1.0.4-mongotemplate-query");
         status.put("timestamp", LocalDateTime.now());
         return ResponseEntity.ok(ApiResponse.success("AURA API is online", status));
     }

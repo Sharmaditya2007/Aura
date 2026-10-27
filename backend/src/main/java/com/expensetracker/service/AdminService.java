@@ -6,9 +6,13 @@ import com.expensetracker.exception.ResourceNotFoundException;
 import com.expensetracker.model.*;
 import com.expensetracker.repository.*;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,19 +33,22 @@ public class AdminService {
     private final RecurringTransactionRepository recurringRepository;
     private final AuditLogRepository auditLogRepository;
     private final NotificationService notificationService;
+    private final MongoTemplate mongoTemplate;
 
     public AdminService(UserRepository userRepository,
                         TransactionRepository transactionRepository,
                         CategoryRepository categoryRepository,
                         RecurringTransactionRepository recurringRepository,
                         AuditLogRepository auditLogRepository,
-                        NotificationService notificationService) {
+                        NotificationService notificationService,
+                        MongoTemplate mongoTemplate) {
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
         this.categoryRepository = categoryRepository;
         this.recurringRepository = recurringRepository;
         this.auditLogRepository = auditLogRepository;
         this.notificationService = notificationService;
+        this.mongoTemplate = mongoTemplate;
     }
 
     public AdminDashboardSummaryDto getDashboardSummary() {
@@ -79,14 +87,37 @@ public class AdminService {
 
     public Page<UserSummaryDto> getAllUsers(Role role, UserStatus status, String search,
                                            int page, int size, String sortBy, String direction) {
+        Query query = new Query();
+        if (role != null) {
+            query.addCriteria(Criteria.where("role").is(role));
+        }
+        if (status != null) {
+            query.addCriteria(Criteria.where("status").is(status));
+        }
+        if (search != null && !search.isBlank()) {
+            String pattern = "(?i)" + Pattern.quote(search.trim());
+            Criteria searchCriteria = new Criteria().orOperator(
+                    Criteria.where("fullName").regex(pattern),
+                    Criteria.where("email").regex(pattern)
+            );
+            query.addCriteria(searchCriteria);
+        }
+
+        long total = mongoTemplate.count(query, User.class);
+
         Sort sort = Sort.by(
                 "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC,
                 (sortBy != null && !sortBy.isBlank()) ? sortBy : "createdAt"
         );
         Pageable pageable = PageRequest.of(page >= 0 ? page : 0, size > 0 ? size : 20, sort);
+        query.with(pageable);
 
-        Page<User> userPage = userRepository.searchUsers(role, status, (search != null && !search.isBlank()) ? search.trim() : null, pageable);
-        return userPage.map(UserSummaryDto::new);
+        List<User> users = mongoTemplate.find(query, User.class);
+        List<UserSummaryDto> responses = users.stream()
+                .map(UserSummaryDto::new)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(responses, pageable, total);
     }
 
     public AdminUserDetailDto getUserDetails(String userId) {

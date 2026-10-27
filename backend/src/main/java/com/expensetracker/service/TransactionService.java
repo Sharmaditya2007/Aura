@@ -10,15 +10,20 @@ import com.expensetracker.model.TransactionType;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.TransactionRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,13 +32,16 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
     private final BudgetService budgetService;
+    private final MongoTemplate mongoTemplate;
 
     public TransactionService(TransactionRepository transactionRepository,
                               CategoryRepository categoryRepository,
-                              BudgetService budgetService) {
+                              BudgetService budgetService,
+                              MongoTemplate mongoTemplate) {
         this.transactionRepository = transactionRepository;
         this.categoryRepository = categoryRepository;
         this.budgetService = budgetService;
+        this.mongoTemplate = mongoTemplate;
     }
 
     public TransactionResponse createTransaction(String userId, TransactionRequest request) {
@@ -100,19 +108,49 @@ public class TransactionService {
     public Page<TransactionResponse> getTransactions(String userId, TransactionType type, String category,
                                                      LocalDate startDate, LocalDate endDate, String search,
                                                      int page, int size, String sortBy, String direction) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(userId));
+
+        if (type != null) {
+            query.addCriteria(Criteria.where("type").is(type));
+        }
+
+        if (category != null && !category.isBlank()) {
+            query.addCriteria(Criteria.where("category").is(category.trim()));
+        }
+
+        if (startDate != null && endDate != null) {
+            query.addCriteria(Criteria.where("date").gte(startDate).lte(endDate));
+        } else if (startDate != null) {
+            query.addCriteria(Criteria.where("date").gte(startDate));
+        } else if (endDate != null) {
+            query.addCriteria(Criteria.where("date").lte(endDate));
+        }
+
+        if (search != null && !search.isBlank()) {
+            String pattern = "(?i)" + Pattern.quote(search.trim());
+            Criteria searchCriteria = new Criteria().orOperator(
+                    Criteria.where("description").regex(pattern),
+                    Criteria.where("notes").regex(pattern)
+            );
+            query.addCriteria(searchCriteria);
+        }
+
+        long total = mongoTemplate.count(query, Transaction.class);
+
         Sort sort = Sort.by(
                 "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC,
                 (sortBy != null && !sortBy.isBlank()) ? sortBy : "date"
         );
         Pageable pageable = PageRequest.of(page >= 0 ? page : 0, size > 0 ? size : 20, sort);
+        query.with(pageable);
 
-        Page<Transaction> transactionPage = transactionRepository.filterTransactions(
-                userId, type, (category != null && !category.isBlank()) ? category.trim() : null,
-                startDate, endDate, (search != null && !search.isBlank()) ? search.trim() : null,
-                pageable
-        );
+        List<Transaction> transactions = mongoTemplate.find(query, Transaction.class);
+        List<TransactionResponse> responses = transactions.stream()
+                .map(TransactionResponse::new)
+                .collect(Collectors.toList());
 
-        return transactionPage.map(TransactionResponse::new);
+        return new PageImpl<>(responses, pageable, total);
     }
 
     public List<TransactionResponse> getRecentTransactions(String userId) {

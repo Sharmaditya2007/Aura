@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
-export const MetricCard = ({ title, amount, icon: Icon, changePercent, subtitle, isCurrency = true, prefix = '₹' }) => {
+export const MetricCard = ({ title, amount, icon: Icon, changePercent, subtitle, isCurrency = true, prefix = '₹', suffix = '' }) => {
   const [displayValue, setDisplayValue] = useState(0);
 
   // Smooth numeric counter animation
@@ -28,9 +28,16 @@ export const MetricCard = ({ title, amount, icon: Icon, changePercent, subtitle,
     return () => clearInterval(timer);
   }, [amount]);
 
+  const isNegative = displayValue < 0;
+  const absValue = Math.abs(displayValue);
+  const formattedAbs = absValue.toLocaleString('en-IN', {
+    minimumFractionDigits: isCurrency ? 2 : (suffix ? 1 : 0),
+    maximumFractionDigits: isCurrency ? 2 : (suffix ? 1 : 2),
+  });
+
   const formattedAmount = isCurrency
-    ? `${prefix}${displayValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-    : displayValue.toLocaleString('en-IN');
+    ? (isNegative ? `-${prefix}${formattedAbs}` : `${prefix}${formattedAbs}`)
+    : (isNegative ? `-${formattedAbs}${suffix}` : `${formattedAbs}${suffix}`);
 
   const hasChange = changePercent !== null && changePercent !== undefined;
   const isPositiveChange = hasChange && changePercent > 0;

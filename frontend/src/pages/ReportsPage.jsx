@@ -230,6 +230,7 @@ export const ReportsPage = () => {
             amount={summary?.savingsRate || 0}
             isCurrency={false}
             prefix=""
+            suffix="%"
             icon={TrendingUp}
             subtitle={`${summary?.totalTransactions || 0} transactions analyzed`}
           />

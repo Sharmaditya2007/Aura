@@ -18,7 +18,7 @@ public class EmailService {
     @Value("${app.mail.enabled:true}")
     private boolean mailEnabled;
 
-    @Value("${app.mail.from:cleanai2026@gmail.com}")
+    @Value("${app.mail.from:adityashukla0913@gmail.com}")
     private String fromEmail;
 
     public EmailService(JavaMailSender mailSender) {
@@ -56,7 +56,7 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setFrom(fromEmail, "AURA Finance");
             helper.setTo(to);
-            helper.setSubject("AURA Finance — Verification Code: " + otpCode);
+            helper.setSubject("Your AURA verification code is " + otpCode);
 
             String html = "<!DOCTYPE html>" +
                     "<html><head><meta charset='utf-8'></head>" +

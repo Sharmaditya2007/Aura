@@ -77,7 +77,8 @@ public class SecurityConfig {
                     "/api/auth/resend-otp",
                     "/api/auth/login",
                     "/api/auth/forgot-password",
-                    "/api/auth/reset-password"
+                    "/api/auth/reset-password",
+                    "/api/auth/status"
                 ).permitAll()
                 .requestMatchers("/api/public/**").permitAll()
                 .requestMatchers("/error").permitAll()

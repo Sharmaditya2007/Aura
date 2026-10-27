@@ -9,6 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -17,6 +21,15 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getStatus() {
+        Map<String, Object> status = new HashMap<>();
+        status.put("status", "UP");
+        status.put("version", "1.0.1-async-brevo");
+        status.put("timestamp", LocalDateTime.now());
+        return ResponseEntity.ok(ApiResponse.success("AURA API is online", status));
     }
 
     @PostMapping("/register")

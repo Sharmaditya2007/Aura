@@ -374,6 +374,9 @@ export const RegisterPage = () => {
                 <div className="mt-1 font-mono text-xs text-white bg-[#171717] border border-[#292929] py-1 px-3 rounded-lg inline-block">
                   {email}
                 </div>
+                <p className="text-[11px] text-[#888888] mt-2">
+                  (Please check your Inbox or Spam / Junk folder)
+                </p>
               </div>
 
               {error && (

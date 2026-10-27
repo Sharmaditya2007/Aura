@@ -22,7 +22,7 @@ public class EmailService {
     @Value("${app.mail.enabled:true}")
     private boolean mailEnabled;
 
-    @Value("${app.mail.from:adityashukla0913@gmail.com}")
+    @Value("${app.mail.from:cleanai2026@gmail.com}")
     private String fromEmail;
 
     public EmailService(JavaMailSender mailSender) {

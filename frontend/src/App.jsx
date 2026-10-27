@@ -43,9 +43,9 @@ export function App() {
           {/* Protected User Dashboard */}
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/transactions" element={<TransactionsPage />} />
-            <Route path="/income" element={<TransactionsPage defaultType="INCOME" />} />
-            <Route path="/expenses" element={<TransactionsPage defaultType="EXPENSE" />} />
+            <Route path="/transactions" element={<TransactionsPage key="transactions-all" />} />
+            <Route path="/income" element={<TransactionsPage key="transactions-income" defaultType="INCOME" />} />
+            <Route path="/expenses" element={<TransactionsPage key="transactions-expenses" defaultType="EXPENSE" />} />
             <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/budgets" element={<BudgetsPage />} />
             <Route path="/recurring" element={<RecurringPage />} />

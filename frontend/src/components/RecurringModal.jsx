@@ -95,8 +95,9 @@ export const RecurringModal = ({ isOpen, onClose, onSuccess, initialData = null 
       } else {
         await api.post('/recurring-transactions', payload);
       }
-      onSuccess();
-      onClose();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
+      if (typeof onSuccess === 'function') onSuccess();
+      if (typeof onClose === 'function') onClose();
     } catch (err) {
       const msg = err.response?.data?.message || err.response?.data?.error || 'Failed to schedule recurring transaction';
       setError(msg);

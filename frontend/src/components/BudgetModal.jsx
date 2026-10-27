@@ -85,8 +85,9 @@ export const BudgetModal = ({ isOpen, onClose, onSuccess, initialData = null }) 
       } else {
         await api.post('/budgets', payload);
       }
-      onSuccess();
-      onClose();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
+      if (typeof onSuccess === 'function') onSuccess();
+      if (typeof onClose === 'function') onClose();
     } catch (err) {
       const msg = err.response?.data?.message || err.response?.data?.error || 'Failed to save budget';
       setError(msg);

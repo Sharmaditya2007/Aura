@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { X, Calendar, Tag, CreditCard, AlignLeft, Check, Trash2 } from 'lucide-react';
 import api from '../services/api';
 
-export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = null }) => {
-  const [type, setType] = useState('EXPENSE');
+export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = null, defaultType = 'EXPENSE' }) => {
+  const [type, setType] = useState(defaultType);
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]);
@@ -53,7 +53,7 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
   // Set initial data if editing
   useEffect(() => {
     if (initialData) {
-      setType(initialData.type || 'EXPENSE');
+      setType(initialData.type || defaultType || 'EXPENSE');
       setAmount(initialData.amount ? initialData.amount.toString() : '');
       setCategory(initialData.category || '');
       setDate(initialData.date || new Date().toISOString().split('T')[0]);
@@ -62,7 +62,7 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
       setNotes(initialData.notes || '');
     } else {
       // Default reset
-      setType('EXPENSE');
+      setType(defaultType || 'EXPENSE');
       setAmount('');
       setCategory('');
       setDate(new Date().toISOString().split('T')[0]);
@@ -71,7 +71,7 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
       setNotes('');
     }
     setError('');
-  }, [initialData, isOpen]);
+  }, [initialData, isOpen, defaultType]);
 
   // Filter categories by type
   const availableCategories = categories.filter((c) => c.type === type && !c.isArchived);
@@ -141,10 +141,10 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
         <div className="px-6 py-5 border-b border-[#292929] flex items-center justify-between bg-[#111111]">
           <div>
             <h2 className="text-base font-bold text-white">
-              {initialData ? 'Edit Transaction' : 'Record Transaction'}
+              {initialData ? 'Edit Transaction' : type === 'INCOME' ? 'Record Income' : 'Record Expense'}
             </h2>
             <p className="text-xs text-[#737373]">
-              {initialData ? 'Update financial ledger entry' : 'Post a new debit or credit to your ledger'}
+              {initialData ? 'Update financial ledger entry' : type === 'INCOME' ? 'Credit new income to your ledger' : 'Post a new expense to your ledger'}
             </p>
           </div>
           <button
@@ -356,7 +356,7 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
                 ) : (
                   <>
                     <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                    <span>{initialData ? 'Update Record' : 'Save Transaction'}</span>
+                    <span>{initialData ? 'Update Record' : type === 'INCOME' ? 'Save Income' : type === 'EXPENSE' ? 'Save Expense' : 'Save Transaction'}</span>
                   </>
                 )}
               </button>

@@ -56,6 +56,7 @@ export const BudgetsPage = () => {
       await api.delete(`/budgets/${deletingId}`);
       setDeletingId(null);
       fetchBudgets();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
     } catch (err) {
       console.error(err);
     } finally {

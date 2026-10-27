@@ -51,8 +51,9 @@ export const DeleteCategoryModal = ({
         await api.delete(`/categories/${category.id}`);
       }
 
-      onSuccess();
-      onClose();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
+      if (typeof onSuccess === 'function') onSuccess();
+      if (typeof onClose === 'function') onClose();
     } catch (err) {
       const msg = err.response?.data?.message || err.response?.data?.error || 'Failed to delete category';
       setError(msg);

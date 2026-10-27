@@ -27,6 +27,11 @@ export const TransactionsPage = ({ defaultType = null }) => {
 
   // Filters
   const [type, setType] = useState(defaultType || '');
+
+  useEffect(() => {
+    setType(defaultType || '');
+  }, [defaultType]);
+
   const [category, setCategory] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -158,7 +163,7 @@ export const TransactionsPage = ({ defaultType = null }) => {
           className="px-5 py-2.5 rounded-xl bg-white text-black font-semibold text-xs hover:bg-white/90 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.12)] self-start sm:self-auto"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>New Transaction</span>
+          <span>{defaultType === 'INCOME' ? 'New Income' : defaultType === 'EXPENSE' ? 'New Expense' : 'New Transaction'}</span>
         </button>
       </div>
 
@@ -199,11 +204,13 @@ export const TransactionsPage = ({ defaultType = null }) => {
               className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-white"
             >
               <option value="">All Categories</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.name} className="bg-[#171717] text-white">
-                  {c.name}
-                </option>
-              ))}
+              {categories
+                .filter((c) => (defaultType ? c.type === defaultType : (!type || c.type === type)))
+                .map((c) => (
+                  <option key={c.id} value={c.name} className="bg-[#171717] text-white">
+                    {c.name}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -251,7 +258,7 @@ export const TransactionsPage = ({ defaultType = null }) => {
               ? 'Try adjusting or clearing your active search and date filters.'
               : 'Add your first transaction to populate your personal finance ledger.'
           }
-          actionLabel={hasActiveFilters ? 'Clear Filters' : 'Add Transaction'}
+          actionLabel={hasActiveFilters ? 'Clear Filters' : defaultType === 'INCOME' ? 'Add Income' : defaultType === 'EXPENSE' ? 'Add Expense' : 'Add Transaction'}
           onAction={hasActiveFilters ? handleClearFilters : () => setIsModalOpen(true)}
         />
       ) : (
@@ -394,6 +401,7 @@ export const TransactionsPage = ({ defaultType = null }) => {
       <TransactionModal
         isOpen={isModalOpen}
         initialData={editingTransaction}
+        defaultType={defaultType || 'EXPENSE'}
         onClose={() => {
           setIsModalOpen(false);
           setEditingTransaction(null);

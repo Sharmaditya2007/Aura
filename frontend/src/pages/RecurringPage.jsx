@@ -64,6 +64,7 @@ export const RecurringPage = () => {
       await api.delete(`/recurring-transactions/${deletingId}`);
       setDeletingId(null);
       fetchRecurring();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
     } catch (err) {
       console.error(err);
     } finally {
@@ -83,6 +84,7 @@ export const RecurringPage = () => {
           : 'All recurring rules are up-to-date. No transactions were due today.'
       );
       fetchRecurring();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
       setTimeout(() => setProcessMessage(''), 5000);
     } catch (err) {
       setProcessMessage('Failed to trigger execution batch.');

@@ -176,6 +176,7 @@ export const CategoriesPage = () => {
       <CategoryModal
         isOpen={isCreateModalOpen}
         initialData={editingCategory}
+        defaultType={activeTab}
         onClose={() => {
           setIsCreateModalOpen(false);
           setEditingCategory(null);

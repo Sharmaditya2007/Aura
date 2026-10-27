@@ -12,9 +12,9 @@ const PRESET_COLORS = [
   '#FFFFFF', '#10B981', '#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#EF4444', '#06B6D4', '#A3A3A3'
 ];
 
-export const CategoryModal = ({ isOpen, onClose, onSuccess, initialData = null }) => {
+export const CategoryModal = ({ isOpen, onClose, onSuccess, initialData = null, defaultType = 'EXPENSE' }) => {
   const [name, setName] = useState('');
-  const [type, setType] = useState('EXPENSE');
+  const [type, setType] = useState(defaultType);
   const [icon, setIcon] = useState('tag');
   const [color, setColor] = useState('#FFFFFF');
   const [loading, setLoading] = useState(false);
@@ -23,17 +23,17 @@ export const CategoryModal = ({ isOpen, onClose, onSuccess, initialData = null }
   useEffect(() => {
     if (initialData) {
       setName(initialData.name || '');
-      setType(initialData.type || 'EXPENSE');
+      setType(initialData.type || defaultType || 'EXPENSE');
       setIcon(initialData.icon || 'tag');
       setColor(initialData.color || '#FFFFFF');
     } else {
       setName('');
-      setType('EXPENSE');
+      setType(defaultType || 'EXPENSE');
       setIcon('tag');
       setColor('#FFFFFF');
     }
     setError('');
-  }, [initialData, isOpen]);
+  }, [initialData, isOpen, defaultType]);
 
   if (!isOpen) return null;
 
@@ -60,8 +60,9 @@ export const CategoryModal = ({ isOpen, onClose, onSuccess, initialData = null }
       } else {
         await api.post('/categories', payload);
       }
-      onSuccess();
-      onClose();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
+      if (typeof onSuccess === 'function') onSuccess();
+      if (typeof onClose === 'function') onClose();
     } catch (err) {
       const msg = err.response?.data?.message || err.response?.data?.error || 'Failed to save category';
       setError(msg);

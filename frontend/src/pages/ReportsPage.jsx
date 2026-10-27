@@ -56,6 +56,10 @@ export const ReportsPage = () => {
 
   useEffect(() => {
     fetchReports();
+
+    const handleUpdate = () => fetchReports();
+    window.addEventListener('aura:transaction-updated', handleUpdate);
+    return () => window.removeEventListener('aura:transaction-updated', handleUpdate);
   }, [startDate, endDate]);
 
   const handlePresetChange = (preset) => {

@@ -95,6 +95,18 @@ export const TransactionsPage = ({ defaultType = null }) => {
     return () => clearTimeout(delayTimer);
   }, [search]);
 
+  // Synchronize when global transaction modal completes
+  useEffect(() => {
+    const handleTransactionUpdate = () => {
+      fetchTransactions(currentPage);
+    };
+
+    window.addEventListener('aura:transaction-updated', handleTransactionUpdate);
+    return () => {
+      window.removeEventListener('aura:transaction-updated', handleTransactionUpdate);
+    };
+  }, [currentPage]);
+
   const handleEdit = (tx) => {
     setEditingTransaction(tx);
     setIsModalOpen(true);
@@ -107,6 +119,7 @@ export const TransactionsPage = ({ defaultType = null }) => {
       await api.delete(`/transactions/${deletingId}`);
       setDeletingId(null);
       fetchTransactions(currentPage);
+      window.dispatchEvent(new Event('aura:transaction-updated'));
     } catch (err) {
       console.error(err);
     } finally {
@@ -385,7 +398,10 @@ export const TransactionsPage = ({ defaultType = null }) => {
           setIsModalOpen(false);
           setEditingTransaction(null);
         }}
-        onSuccess={() => fetchTransactions(currentPage)}
+        onSuccess={() => {
+          fetchTransactions(currentPage);
+          window.dispatchEvent(new Event('aura:transaction-updated'));
+        }}
       />
     </div>
   );

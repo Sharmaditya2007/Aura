@@ -56,6 +56,7 @@ export const DashboardPage = () => {
       await api.delete(`/transactions/${deletingId}`);
       setDeletingId(null);
       fetchData();
+      window.dispatchEvent(new Event('aura:transaction-updated'));
     } catch (err) {
       console.error('Failed to delete transaction:', err);
     } finally {
@@ -88,6 +89,15 @@ export const DashboardPage = () => {
 
   useEffect(() => {
     fetchData();
+
+    const handleTransactionUpdate = () => {
+      fetchData();
+    };
+
+    window.addEventListener('aura:transaction-updated', handleTransactionUpdate);
+    return () => {
+      window.removeEventListener('aura:transaction-updated', handleTransactionUpdate);
+    };
   }, []);
 
   const hasData = summary?.hasData || recentTransactions.length > 0;

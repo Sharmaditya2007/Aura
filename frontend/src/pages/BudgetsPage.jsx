@@ -43,6 +43,10 @@ export const BudgetsPage = () => {
 
   useEffect(() => {
     fetchBudgets();
+
+    const handleUpdate = () => fetchBudgets();
+    window.addEventListener('aura:transaction-updated', handleUpdate);
+    return () => window.removeEventListener('aura:transaction-updated', handleUpdate);
   }, [selectedMonth, selectedYear]);
 
   const handleDelete = async () => {

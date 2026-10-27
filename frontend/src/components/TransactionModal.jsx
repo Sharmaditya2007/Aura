@@ -176,7 +176,7 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
             </label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-mono text-[#A3A3A3]">
-                $
+                ₹
               </span>
               <input
                 type="number"

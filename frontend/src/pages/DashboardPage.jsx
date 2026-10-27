@@ -5,6 +5,7 @@ import { MetricCard } from '../components/MetricCard';
 import { CardSkeleton, TableSkeleton } from '../components/LoadingSkeleton';
 import { EmptyState } from '../components/EmptyState';
 import { TransactionModal } from '../components/TransactionModal';
+import { formatINR } from '../utils/formatters';
 import {
   TrendingUp,
   TrendingDown,
@@ -82,7 +83,7 @@ export const DashboardPage = () => {
             <div key={index} className="flex items-center gap-2" style={{ color: entry.color || '#fff' }}>
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color || '#fff' }} />
               <span className="capitalize">{entry.name}:</span>
-              <span className="font-bold text-white">${parseFloat(entry.value).toFixed(2)}</span>
+              <span className="font-bold text-white">{formatINR(entry.value)}</span>
             </div>
           ))}
         </div>
@@ -186,7 +187,7 @@ export const DashboardPage = () => {
                     fontSize={11}
                     tickLine={false}
                     axisLine={{ stroke: '#292929' }}
-                    tickFormatter={(val) => `$${val}`}
+                    tickFormatter={(val) => `₹${val}`}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Bar dataKey="income" name="Income" fill="#FFFFFF" radius={[4, 4, 0, 0]} />
@@ -257,7 +258,7 @@ export const DashboardPage = () => {
                         <span className="text-white truncate max-w-[120px]">{item.category}</span>
                       </div>
                       <div className="font-mono text-[#A3A3A3]">
-                        ${item.amount?.toFixed(2)} ({item.percentage?.toFixed(0)}%)
+                        {formatINR(item.amount)} ({item.percentage?.toFixed(0)}%)
                       </div>
                     </div>
                   ))}
@@ -335,7 +336,7 @@ export const DashboardPage = () => {
                           isExpense ? 'text-white' : 'text-fintech-green'
                         }`}
                       >
-                        {isExpense ? '-' : '+'}${tx.amount?.toFixed(2)}
+                        {isExpense ? '-' : '+'}{formatINR(tx.amount)}
                       </div>
                     </div>
                   </div>
@@ -371,7 +372,7 @@ export const DashboardPage = () => {
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-semibold text-white truncate">{b.category}</span>
                       <span className="font-mono text-[#A3A3A3]">
-                        ${b.spent?.toFixed(0)} / ${b.monthlyLimit?.toFixed(0)}
+                        {formatINR(b.spent)} / {formatINR(b.monthlyLimit)}
                       </span>
                     </div>
 
@@ -394,7 +395,7 @@ export const DashboardPage = () => {
                       {b.isOverBudget ? (
                         <span className="text-fintech-red font-bold">Exceeded</span>
                       ) : (
-                        <span>${b.remaining?.toFixed(0)} left</span>
+                        <span>{formatINR(b.remaining)} left</span>
                       )}
                     </div>
                   </div>
@@ -431,7 +432,7 @@ export const DashboardPage = () => {
                       </div>
                     </div>
                     <div className="text-right font-mono font-bold text-white">
-                      ${r.amount?.toFixed(2)}
+                      {formatINR(r.amount)}
                     </div>
                   </div>
                 ))}

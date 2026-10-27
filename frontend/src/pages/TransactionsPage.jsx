@@ -3,6 +3,7 @@ import api from '../services/api';
 import { TransactionModal } from '../components/TransactionModal';
 import { TableSkeleton } from '../components/LoadingSkeleton';
 import { EmptyState } from '../components/EmptyState';
+import { formatINR } from '../utils/formatters';
 import {
   Search,
   Filter,
@@ -292,7 +293,7 @@ export const TransactionsPage = ({ defaultType = null }) => {
                       </td>
                       <td className="py-3.5 px-4 text-right font-mono font-bold whitespace-nowrap">
                         <span className={isExpense ? 'text-white' : 'text-fintech-green'}>
-                          {isExpense ? '-' : '+'}${tx.amount?.toFixed(2)}
+                          {isExpense ? '-' : '+'}{formatINR(tx.amount)}
                         </span>
                       </td>
                       <td className="py-3.5 px-4 text-center">

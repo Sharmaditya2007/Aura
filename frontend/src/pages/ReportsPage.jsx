@@ -3,6 +3,7 @@ import api from '../services/api';
 import { MetricCard } from '../components/MetricCard';
 import { CardSkeleton, ChartSkeleton } from '../components/LoadingSkeleton';
 import { EmptyState } from '../components/EmptyState';
+import { formatINR } from '../utils/formatters';
 import {
   BarChart3,
   Download,
@@ -110,7 +111,7 @@ export const ReportsPage = () => {
           {payload.map((entry, index) => (
             <div key={index} className="flex items-center gap-2" style={{ color: entry.color || '#fff' }}>
               <span className="capitalize">{entry.name}:</span>
-              <span className="font-bold text-white">${parseFloat(entry.value).toFixed(2)}</span>
+              <span className="font-bold text-white">{formatINR(entry.value)}</span>
             </div>
           ))}
         </div>
@@ -280,7 +281,7 @@ export const ReportsPage = () => {
                   fontSize={11}
                   tickLine={false}
                   axisLine={{ stroke: '#292929' }}
-                  tickFormatter={(val) => `$${val}`}
+                  tickFormatter={(val) => `₹${val}`}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Area
@@ -359,7 +360,7 @@ export const ReportsPage = () => {
                       </div>
                     </td>
                     <td className="py-3.5 px-4 text-right font-mono font-bold text-white">
-                      ${cat.amount?.toFixed(2)}
+                      {formatINR(cat.amount)}
                     </td>
                   </tr>
                 ))}

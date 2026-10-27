@@ -3,6 +3,7 @@ import api from '../services/api';
 import { BudgetModal } from '../components/BudgetModal';
 import { EmptyState } from '../components/EmptyState';
 import { CardSkeleton } from '../components/LoadingSkeleton';
+import { formatINR } from '../utils/formatters';
 import {
   PieChart,
   Plus,
@@ -127,15 +128,15 @@ export const BudgetsPage = () => {
           <div className="flex items-center gap-6 text-xs font-mono">
             <div>
               <span className="text-[#737373]">Allocated: </span>
-              <span className="text-white font-bold">${totalAllocated.toFixed(2)}</span>
+              <span className="text-white font-bold">{formatINR(totalAllocated)}</span>
             </div>
             <div>
               <span className="text-[#737373]">Spent: </span>
-              <span className="text-white font-bold">${totalSpent.toFixed(2)}</span>
+              <span className="text-white font-bold">{formatINR(totalSpent)}</span>
             </div>
             <div>
               <span className="text-[#737373]">Remaining: </span>
-              <span className="text-fintech-green font-bold">${totalRemaining.toFixed(2)}</span>
+              <span className="text-fintech-green font-bold">{formatINR(totalRemaining)}</span>
             </div>
           </div>
         )}
@@ -206,13 +207,13 @@ export const BudgetsPage = () => {
                   <div>
                     <span className="text-[10px] font-mono uppercase text-[#737373] block">Spent</span>
                     <span className="text-xl font-bold font-mono text-white">
-                      ${b.spent?.toFixed(2)}
+                      {formatINR(b.spent)}
                     </span>
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] font-mono uppercase text-[#737373] block">Limit</span>
                     <span className="text-sm font-mono text-[#A3A3A3]">
-                      ${b.monthlyLimit?.toFixed(2)}
+                      {formatINR(b.monthlyLimit)}
                     </span>
                   </div>
                 </div>
@@ -236,11 +237,11 @@ export const BudgetsPage = () => {
                     <span className="text-[#737373]">{b.percentageUsed?.toFixed(1)}% consumed</span>
                     {b.isOverBudget ? (
                       <span className="text-fintech-red font-bold flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3" /> Exceeded by ${(b.spent - b.monthlyLimit).toFixed(2)}
+                        <AlertTriangle className="w-3 h-3" /> Exceeded by {formatINR(b.spent - b.monthlyLimit)}
                       </span>
                     ) : (
                       <span className="text-[#A3A3A3]">
-                        ${b.remaining?.toFixed(2)} remaining
+                        {formatINR(b.remaining)} remaining
                       </span>
                     )}
                   </div>

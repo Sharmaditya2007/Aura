@@ -117,24 +117,24 @@ export const LandingPage = () => {
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
                 <div className="p-4 rounded-xl bg-[#171717] border border-[#262626]">
                   <div className="text-[10px] uppercase font-mono text-[#737373] mb-1">Total Income</div>
-                  <div className="text-xl font-bold font-mono text-white">$12,450.00</div>
+                  <div className="text-xl font-bold font-mono text-white">₹1,25,000.00</div>
                   <div className="text-[10px] font-mono text-fintech-green mt-1 flex items-center gap-1">
                     <TrendingUp className="w-3 h-3" /> +14.2% vs last mo
                   </div>
                 </div>
                 <div className="p-4 rounded-xl bg-[#171717] border border-[#262626]">
                   <div className="text-[10px] uppercase font-mono text-[#737373] mb-1">Total Expenses</div>
-                  <div className="text-xl font-bold font-mono text-white">$3,820.40</div>
+                  <div className="text-xl font-bold font-mono text-white">₹38,200.00</div>
                   <div className="text-[10px] font-mono text-[#737373] mt-1">-4.8% vs last mo</div>
                 </div>
                 <div className="p-4 rounded-xl bg-[#171717] border border-[#262626]">
                   <div className="text-[10px] uppercase font-mono text-[#737373] mb-1">Net Cash Flow</div>
-                  <div className="text-xl font-bold font-mono text-white">$8,629.60</div>
-                  <div className="text-[10px] font-mono text-white/70 mt-1">69.3% savings rate</div>
+                  <div className="text-xl font-bold font-mono text-white">₹86,800.00</div>
+                  <div className="text-[10px] font-mono text-white/70 mt-1">69.4% savings rate</div>
                 </div>
                 <div className="p-4 rounded-xl bg-[#171717] border border-[#262626]">
                   <div className="text-[10px] uppercase font-mono text-[#737373] mb-1">Remaining Budget</div>
-                  <div className="text-xl font-bold font-mono text-white">$1,179.60</div>
+                  <div className="text-xl font-bold font-mono text-white">₹11,800.00</div>
                   <div className="text-[10px] font-mono text-fintech-green mt-1">Within safe limits</div>
                 </div>
               </div>
@@ -166,12 +166,12 @@ export const LandingPage = () => {
               transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
               className="hidden lg:flex absolute -top-6 -left-8 p-3.5 rounded-2xl bg-[#171717]/95 border border-[#383838] shadow-2xl items-center gap-3 backdrop-blur-md"
             >
-              <div className="w-9 h-9 rounded-xl bg-fintech-greenSubtle border border-fintech-green/30 flex items-center justify-center text-fintech-green">
-                <DollarSign className="w-4 h-4" />
+              <div className="w-9 h-9 rounded-xl bg-fintech-greenSubtle border border-fintech-green/30 flex items-center justify-center text-fintech-green font-bold">
+                ₹
               </div>
               <div>
                 <div className="text-xs font-semibold text-white">Client Wire Transfer</div>
-                <div className="text-[11px] font-mono text-fintech-green font-bold">+$4,200.00 • Salary</div>
+                <div className="text-[11px] font-mono text-fintech-green font-bold">+₹42,000.00 • Salary</div>
               </div>
             </motion.div>
 
@@ -186,7 +186,7 @@ export const LandingPage = () => {
               </div>
               <div>
                 <div className="text-xs font-semibold text-white">Dining & Coffee Budget</div>
-                <div className="text-[11px] font-mono text-[#A3A3A3]">48% consumed • $240 remaining</div>
+                <div className="text-[11px] font-mono text-[#A3A3A3]">48% consumed • ₹2,400 remaining</div>
               </div>
             </motion.div>
           </motion.div>

@@ -3,6 +3,7 @@ import api from '../services/api';
 import { RecurringModal } from '../components/RecurringModal';
 import { EmptyState } from '../components/EmptyState';
 import { TableSkeleton } from '../components/LoadingSkeleton';
+import { formatINR } from '../utils/formatters';
 import {
   Repeat,
   Plus,
@@ -196,7 +197,7 @@ export const RecurringPage = () => {
                     <div>
                       <span className="text-[10px] font-mono uppercase text-[#737373] block">Amount</span>
                       <span className="text-2xl font-bold font-mono text-white">
-                        ${r.amount?.toFixed(2)}
+                        {formatINR(r.amount)}
                       </span>
                     </div>
                     <div className="text-right">

@@ -154,7 +154,7 @@ export const BudgetModal = ({ isOpen, onClose, onSuccess, initialData = null }) 
             </label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-base font-mono text-[#A3A3A3]">
-                $
+                ₹
               </span>
               <input
                 type="number"

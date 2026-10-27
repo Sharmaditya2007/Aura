@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { MetricCard } from '../components/MetricCard';
 import { CardSkeleton, TableSkeleton } from '../components/LoadingSkeleton';
+import { formatINR } from '../utils/formatters';
 import {
   ShieldCheck,
   Users,
@@ -522,19 +523,19 @@ export const AdminDashboardPage = () => {
                   <div className="p-3.5 rounded-xl bg-[#171717] border border-[#262626]">
                     <div className="text-[10px] uppercase font-mono text-[#737373]">Total Income</div>
                     <div className="text-base font-mono font-bold text-fintech-green mt-1">
-                      ${userDetails.totalIncome?.toFixed(2)}
+                      {formatINR(userDetails.totalIncome)}
                     </div>
                   </div>
                   <div className="p-3.5 rounded-xl bg-[#171717] border border-[#262626]">
                     <div className="text-[10px] uppercase font-mono text-[#737373]">Total Expense</div>
                     <div className="text-base font-mono font-bold text-white mt-1">
-                      ${userDetails.totalExpenses?.toFixed(2)}
+                      {formatINR(userDetails.totalExpenses)}
                     </div>
                   </div>
                   <div className="p-3.5 rounded-xl bg-[#171717] border border-[#262626]">
                     <div className="text-[10px] uppercase font-mono text-[#737373]">Net Balance</div>
                     <div className="text-base font-mono font-bold text-white mt-1">
-                      ${userDetails.currentBalance?.toFixed(2)}
+                      {formatINR(userDetails.currentBalance)}
                     </div>
                   </div>
                 </div>
@@ -550,7 +551,7 @@ export const AdminDashboardPage = () => {
                         <div key={i} className="flex items-center justify-between text-xs">
                           <span className="text-white">{c.category}</span>
                           <span className="font-mono text-[#A3A3A3]">
-                            ${c.amount?.toFixed(2)} ({c.percentage?.toFixed(0)}%)
+                            {formatINR(c.amount)} ({c.percentage?.toFixed(0)}%)
                           </span>
                         </div>
                       ))}
@@ -572,7 +573,7 @@ export const AdminDashboardPage = () => {
                             <div className="text-[10px] font-mono text-[#737373]">{t.date} • {t.category}</div>
                           </div>
                           <div className={`font-mono font-bold ${t.type === 'EXPENSE' ? 'text-white' : 'text-fintech-green'}`}>
-                            {t.type === 'EXPENSE' ? '-' : '+'}${t.amount?.toFixed(2)}
+                            {t.type === 'EXPENSE' ? '-' : '+'}{formatINR(t.amount)}
                           </div>
                         </div>
                       ))}

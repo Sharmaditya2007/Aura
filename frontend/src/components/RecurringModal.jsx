@@ -166,7 +166,7 @@ export const RecurringModal = ({ isOpen, onClose, onSuccess, initialData = null 
               </label>
               <div className="relative">
                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-mono text-[#A3A3A3]">
-                  $
+                  ₹
                 </span>
                 <input
                   type="number"

@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,27 +50,75 @@ public class AuthService {
         }
 
         String email = request.getEmail().trim().toLowerCase();
-        if (userRepository.existsByEmail(email)) {
-            throw new ConflictException("An account with this email address already exists");
+        Optional<User> existingUserOpt = userRepository.findByEmail(email);
+        User user;
+
+        if (existingUserOpt.isPresent()) {
+            User existing = existingUserOpt.get();
+            if (existing.isEmailVerified()) {
+                throw new ConflictException("An account with this email address already exists");
+            }
+            // User registered previously but has not completed OTP verification yet
+            user = existing;
+            user.setFullName(request.getFullName().trim());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setUpdatedAt(LocalDateTime.now());
+        } else {
+            user = new User();
+            user.setFullName(request.getFullName().trim());
+            user.setEmail(email);
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setRole(Role.ROLE_USER);
+            user.setStatus(UserStatus.ACTIVE);
+            user.setCreatedAt(LocalDateTime.now());
+            user.setUpdatedAt(LocalDateTime.now());
         }
 
-        User user = new User();
-        user.setFullName(request.getFullName().trim());
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.ROLE_USER);
-        user.setStatus(UserStatus.ACTIVE);
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        user.setLastLoginAt(LocalDateTime.now());
+        // Generate 6-digit cryptographic security code
+        String otp = String.format("%06d", new SecureRandom().nextInt(1000000));
+        user.setVerificationOtp(otp);
+        user.setVerificationOtpExpiresAt(LocalDateTime.now().plusMinutes(10));
+        user.setEmailVerified(false);
 
+        userRepository.save(user);
+
+        // Dispatch Email
+        emailService.sendRegistrationOtpEmail(user.getEmail(), user.getFullName(), otp);
+
+        return new AuthResponse(true, user.getEmail(), "Verification code sent to " + user.getEmail());
+    }
+
+    public AuthResponse verifyOtp(VerifyOtpRequest request) {
+        String email = request.getEmail().trim().toLowerCase();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BadRequestException("No registration found for this email address"));
+
+        if (user.isEmailVerified()) {
+            UserPrincipal principal = UserPrincipal.create(user);
+            String token = tokenProvider.generateToken(principal);
+            return new AuthResponse(token, new UserSummaryDto(user));
+        }
+
+        if (user.getVerificationOtp() == null || !user.getVerificationOtp().equals(request.getOtp().trim())) {
+            throw new BadRequestException("Invalid 6-digit verification code");
+        }
+
+        if (user.getVerificationOtpExpiresAt() == null || user.getVerificationOtpExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new BadRequestException("Verification code has expired. Please request a new code.");
+        }
+
+        user.setEmailVerified(true);
+        user.setVerificationOtp(null);
+        user.setVerificationOtpExpiresAt(null);
+        user.setLastLoginAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         User savedUser = userRepository.save(user);
 
         // Welcome notification
         notificationService.createNotification(
                 savedUser.getId(),
                 "Welcome to AURA Finance",
-                "Your account has been successfully configured. Start tracking your income and expenses today.",
+                "Your email has been verified and your private financial ledger is active.",
                 NotificationType.SYSTEM
         );
 
@@ -76,6 +126,24 @@ public class AuthService {
         String token = tokenProvider.generateToken(principal);
 
         return new AuthResponse(token, new UserSummaryDto(savedUser));
+    }
+
+    public void resendOtp(ResendOtpRequest request) {
+        String email = request.getEmail().trim().toLowerCase();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BadRequestException("No account found with this email address"));
+
+        if (user.isEmailVerified()) {
+            throw new BadRequestException("Your email address is already verified. Please sign in.");
+        }
+
+        String otp = String.format("%06d", new SecureRandom().nextInt(1000000));
+        user.setVerificationOtp(otp);
+        user.setVerificationOtpExpiresAt(LocalDateTime.now().plusMinutes(10));
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
+
+        emailService.sendRegistrationOtpEmail(user.getEmail(), user.getFullName(), otp);
     }
 
     public AuthResponse login(LoginRequest request) {

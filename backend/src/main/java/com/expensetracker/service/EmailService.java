@@ -85,4 +85,20 @@ public class EmailService {
         );
         sendEmail(to, subject, body);
     }
+
+    public void sendRegistrationOtpEmail(String to, String userName, String otpCode) {
+        String subject = "AURA Finance — Verification Code: " + otpCode;
+        String body = String.format(
+                "Hello %s,\n\n" +
+                "Welcome to AURA Finance.\n\n" +
+                "Your 6-digit email verification code is:\n\n" +
+                "    %s\n\n" +
+                "This security code will expire in 10 minutes.\n" +
+                "Enter this code in the verification screen to activate your private financial ledger.\n\n" +
+                "If you did not initiate this registration, please disregard this email.\n\n" +
+                "— The AURA Finance Team",
+                userName, otpCode
+        );
+        sendEmail(to, subject, body);
+    }
 }

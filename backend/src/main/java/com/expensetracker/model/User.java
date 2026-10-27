@@ -29,6 +29,12 @@ public class User {
 
     private LocalDateTime resetPasswordExpiresAt;
 
+    private String verificationOtp;
+
+    private LocalDateTime verificationOtpExpiresAt;
+
+    private boolean emailVerified = false;
+
     private LocalDateTime lastLoginAt;
 
     @CreatedDate
@@ -132,6 +138,30 @@ public class User {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public String getVerificationOtp() {
+        return verificationOtp;
+    }
+
+    public void setVerificationOtp(String verificationOtp) {
+        this.verificationOtp = verificationOtp;
+    }
+
+    public LocalDateTime getVerificationOtpExpiresAt() {
+        return verificationOtpExpiresAt;
+    }
+
+    public void setVerificationOtpExpiresAt(LocalDateTime verificationOtpExpiresAt) {
+        this.verificationOtpExpiresAt = verificationOtpExpiresAt;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {

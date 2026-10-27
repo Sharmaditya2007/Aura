@@ -53,6 +53,10 @@ export const AuthProvider = ({ children }) => {
       confirmPassword,
     });
     if (res.data?.success && res.data?.data) {
+      // If requires OTP verification
+      if (res.data.data.requiresVerification) {
+        return res.data.data;
+      }
       const { token: jwtToken, user: userProfile } = res.data.data;
       setToken(jwtToken);
       setUser(userProfile);
@@ -61,6 +65,24 @@ export const AuthProvider = ({ children }) => {
       return userProfile;
     }
     throw new Error(res.data?.message || 'Registration failed');
+  };
+
+  const verifyOtp = async (email, otp) => {
+    const res = await api.post('/auth/verify-otp', { email, otp });
+    if (res.data?.success && res.data?.data) {
+      const { token: jwtToken, user: userProfile } = res.data.data;
+      setToken(jwtToken);
+      setUser(userProfile);
+      localStorage.setItem('aura_token', jwtToken);
+      localStorage.setItem('aura_user', JSON.stringify(userProfile));
+      return userProfile;
+    }
+    throw new Error(res.data?.message || 'Verification failed');
+  };
+
+  const resendOtp = async (email) => {
+    const res = await api.post('/auth/resend-otp', { email });
+    return res.data;
   };
 
   const logout = () => {
@@ -90,6 +112,8 @@ export const AuthProvider = ({ children }) => {
     isAdmin: user?.role === 'ROLE_ADMIN',
     login,
     register,
+    verifyOtp,
+    resendOtp,
     logout,
     refreshUser,
   };

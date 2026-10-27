@@ -95,17 +95,17 @@ export const TransactionsPage = ({ defaultType = null }) => {
     return () => clearTimeout(delayTimer);
   }, [search]);
 
-  // Synchronize when global transaction modal completes
+  // Synchronize when transaction modal completes
   useEffect(() => {
     const handleTransactionUpdate = () => {
-      fetchTransactions(currentPage);
+      fetchTransactions(0);
     };
 
     window.addEventListener('aura:transaction-updated', handleTransactionUpdate);
     return () => {
       window.removeEventListener('aura:transaction-updated', handleTransactionUpdate);
     };
-  }, [currentPage]);
+  }, []);
 
   const handleEdit = (tx) => {
     setEditingTransaction(tx);
@@ -399,7 +399,7 @@ export const TransactionsPage = ({ defaultType = null }) => {
           setEditingTransaction(null);
         }}
         onSuccess={() => {
-          fetchTransactions(currentPage);
+          fetchTransactions(0);
           window.dispatchEvent(new Event('aura:transaction-updated'));
         }}
       />

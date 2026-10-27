@@ -86,8 +86,7 @@ export const ForgotPasswordPage = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@example.com"
-                    className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors font-mono"
+                    className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-white transition-colors font-mono"
                   />
                 </div>
               </div>

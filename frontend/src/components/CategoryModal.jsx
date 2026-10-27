@@ -131,8 +131,7 @@ export const CategoryModal = ({ isOpen, onClose, onSuccess, initialData = null }
               maxLength={50}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Electric Vehicle Charging"
-              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors"
+              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-white transition-colors"
             />
           </div>
 

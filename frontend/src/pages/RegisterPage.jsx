@@ -250,7 +250,6 @@ export const RegisterPage = () => {
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      placeholder="Aditya Sharma"
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#111111] border border-[#292929] text-white text-sm focus:outline-none focus:border-white transition-colors"
                     />
                   </div>
@@ -268,7 +267,6 @@ export const RegisterPage = () => {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="aditya@example.com"
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#111111] border border-[#292929] text-white text-sm focus:outline-none focus:border-white transition-colors"
                     />
                   </div>
@@ -293,7 +291,6 @@ export const RegisterPage = () => {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••••••"
                       className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#111111] border border-[#292929] text-white text-sm focus:outline-none focus:border-white transition-colors"
                     />
                     <button
@@ -331,7 +328,6 @@ export const RegisterPage = () => {
                       required
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="••••••••••••"
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#111111] border border-[#292929] text-white text-sm focus:outline-none focus:border-white transition-colors"
                     />
                   </div>

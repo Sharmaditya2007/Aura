@@ -159,8 +159,7 @@ export const TransactionsPage = ({ defaultType = null }) => {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search description, notes..."
-              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl pl-9 pr-3.5 py-2 text-xs text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors"
+              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl pl-9 pr-3.5 py-2 text-xs text-white focus:outline-none focus:border-white transition-colors"
             />
           </div>
 

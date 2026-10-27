@@ -175,7 +175,6 @@ export const RecurringModal = ({ isOpen, onClose, onSuccess, initialData = null 
                   required
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  placeholder="0.00"
                   className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl pl-8 pr-3 py-2.5 text-base font-mono font-bold text-white focus:outline-none focus:border-white"
                 />
               </div>
@@ -245,8 +244,7 @@ export const RecurringModal = ({ isOpen, onClose, onSuccess, initialData = null 
               required
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="e.g. Apartment Rent, Cloud Subscription, Monthly Salary"
-              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-[#525252] focus:outline-none focus:border-white"
+              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white"
             />
           </div>
 

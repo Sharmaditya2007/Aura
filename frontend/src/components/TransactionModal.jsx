@@ -185,8 +185,7 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
                 required
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder="0.00"
-                className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl pl-9 pr-4 py-3 text-xl font-mono font-bold text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl pl-9 pr-4 py-3 text-xl font-mono font-bold text-white focus:outline-none focus:border-white transition-colors"
               />
             </div>
           </div>
@@ -241,8 +240,7 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
               maxLength={255}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="e.g. Blue Bottle Coffee & Pastry"
-              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors"
+              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white transition-colors"
             />
           </div>
 
@@ -279,8 +277,7 @@ export const TransactionModal = ({ isOpen, onClose, onSuccess, initialData = nul
               rows={2}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Add client invoice number or personal tags..."
-              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2 text-xs text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors"
+              className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-white transition-colors"
             />
           </div>
 

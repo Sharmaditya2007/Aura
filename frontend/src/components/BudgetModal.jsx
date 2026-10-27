@@ -163,8 +163,7 @@ export const BudgetModal = ({ isOpen, onClose, onSuccess, initialData = null }) 
                 required
                 value={monthlyLimit}
                 onChange={(e) => setMonthlyLimit(e.target.value)}
-                placeholder="500.00"
-                className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl pl-9 pr-4 py-2.5 text-lg font-mono font-bold text-white placeholder-[#525252] focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl pl-9 pr-4 py-2.5 text-lg font-mono font-bold text-white focus:outline-none focus:border-white transition-colors"
               />
             </div>
           </div>

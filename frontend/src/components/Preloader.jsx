@@ -4,30 +4,30 @@ import api from '../services/api';
 import './Preloader.css';
 
 /**
- * THE WEALTH PULSE — LUXURY FINTECH PRELOADER
+ * BLACK DIAMOND FINANCE — ULTRA-PREMIUM CINEMATIC PRELOADER
  *
  * Sequence:
- * 1. Black Screen Reveal: Glowing center dot & floating atmospheric micro-particles.
- * 2. The Money Flow: Financial spline curve drawing dynamic wealth peaks and dips.
- * 3. The Coin Formation: Geometric monochrome discs tumble in CSS 3D space and converge.
- * 4. Logo Reveal: Emblem resolves into luxury finance badge with "EXPENSE TRACKER"
- *    and tagline "Every rupee. Under control."
- * 5. Financial Pulse: Laser pulse track with smooth 00% -> 100% progress counter.
- * 6. Dashboard Transition: Elevation, diagonal silver light sweep, and cinematic mask dissolve.
+ * 1. Dramatic Opening: Architectural light beam sweep across dark obsidian grid + concentric pulse rings.
+ * 2. 3D Financial Emblem Assembly: Sculptural metallic ring, ascending vector facet, and coin core converge.
+ * 3. Continuous 3D Gyroscope & Drifting Coins: Floating metallic discs and multi-axis orbital rings.
+ * 4. Financial Light Trail: Luminous spline charting capital growth with sequential crest illumination.
+ * 5. Precision Orbital Circular Progress: Circumferential arc around emblem with laser bead and tabular readout.
+ * 6. Typography Shimmer: "EXPENSE TRACKER" with metallic specular sheen + "EVERY RUPEE. UNDER CONTROL."
+ * 7. Anamorphic Lens Flare Exit: Horizontal expansion beam and cinematic shutter wipe into dashboard.
  */
 export const Preloader = ({ onFinish }) => {
-  // Choreography sequence phases: 'DOT' | 'FLOW' | 'COINS' | 'LOGO' | 'EXIT'
-  const [phase, setPhase] = useState('DOT');
+  // Sequence Timeline Phases: 'OPENING' | 'ASSEMBLY' | 'TRAIL' | 'TYPOGRAPHY' | 'READY' | 'EXIT'
+  const [phase, setPhase] = useState('OPENING');
   const [progress, setProgress] = useState(0);
-  const [statusText, setStatusText] = useState('INITIALIZING LEDGER');
-  const [showLightSweep, setShowLightSweep] = useState(false);
+  const [statusText, setStatusText] = useState('INITIALIZING ENCRYPTED VAULT');
+  const [showExitFlare, setShowExitFlare] = useState(false);
   const [isExitTransitioning, setIsExitTransitioning] = useState(false);
 
-  // App readiness tracker
+  // App readiness coordination
   const isAppReadyRef = useRef(false);
-  const animationFinishedRef = useRef(false);
+  const completionTriggeredRef = useRef(false);
 
-  // 1. Accessibility: Check prefers-reduced-motion
+  // 1. Accessibility: Check prefers-reduced-motion immediately
   useEffect(() => {
     try {
       const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -35,26 +35,26 @@ export const Preloader = ({ onFinish }) => {
         onFinish?.();
       }
     } catch (e) {
-      // Fallback for environments lacking matchMedia
+      // Graceful fallback
     }
   }, [onFinish]);
 
-  // 2. Coordinate with actual application & backend readiness
+  // 2. Coordinate with genuine application & backend readiness
   useEffect(() => {
     let isMounted = true;
 
-    const checkReadiness = async () => {
+    const verifyReadiness = async () => {
       try {
         const storedToken = localStorage.getItem('aura_token');
         if (storedToken) {
-          // Verify authentication session with backend
+          // Verify JWT session against backend
           await api.get('/auth/me', { timeout: 3500 });
         } else {
-          // For guests, ping categories or fast endpoint to confirm connectivity
+          // Verify public API connectivity for visitors
           await api.get('/categories', { timeout: 3000 }).catch(() => null);
         }
       } catch (err) {
-        // Non-essential error tolerance: do not block the application
+        // Non-blocking fault tolerance: never strand the user
       } finally {
         if (isMounted) {
           isAppReadyRef.current = true;
@@ -62,18 +62,18 @@ export const Preloader = ({ onFinish }) => {
       }
     };
 
-    checkReadiness();
+    verifyReadiness();
 
-    // Safety fallback: Never keep the user trapped longer than 4.2 seconds
-    const safetyTimer = setTimeout(() => {
+    // Absolute fallback: Ensure the transition completes even if server is cold
+    const fallbackTimer = setTimeout(() => {
       if (isMounted) {
         isAppReadyRef.current = true;
       }
-    }, 4200);
+    }, 4000);
 
     return () => {
       isMounted = false;
-      clearTimeout(safetyTimer);
+      clearTimeout(fallbackTimer);
     };
   }, []);
 
@@ -81,28 +81,28 @@ export const Preloader = ({ onFinish }) => {
   useEffect(() => {
     const timers = [];
 
-    // Stage 1 -> 2: Money Flow curve begins (0.75s)
+    // Stage 1 -> 2: 3D Emblem Assembly begins (0.75s)
     timers.push(
       setTimeout(() => {
-        setPhase('FLOW');
-        setStatusText('MAPPING FINANCIAL FLOWS');
+        setPhase('ASSEMBLY');
+        setStatusText('ASSEMBLING SCULPTURAL EMBLEM');
       }, 750)
     );
 
-    // Stage 2 -> 3: 3D Coin Discs converge (1.9s)
+    // Stage 2 -> 3: Financial Light Trail draws across (1.85s)
     timers.push(
       setTimeout(() => {
-        setPhase('COINS');
-        setStatusText('ASSEMBLING CAPITAL EMBLEM');
-      }, 1900)
+        setPhase('TRAIL');
+        setStatusText('MAPPING CAPITAL ASCENT');
+      }, 1850)
     );
 
-    // Stage 3 -> 4: Logo Reveal & Financial Pulse (2.7s)
+    // Stage 3 -> 4: Typography reveal & orbital progress active (2.65s)
     timers.push(
       setTimeout(() => {
-        setPhase('LOGO');
-        setStatusText('CALIBRATING WEALTH PULSE');
-      }, 2700)
+        setPhase('TYPOGRAPHY');
+        setStatusText('CALIBRATING PRECISION VAULT');
+      }, 2650)
     );
 
     return () => {
@@ -110,43 +110,48 @@ export const Preloader = ({ onFinish }) => {
     };
   }, []);
 
-  // 4. Smooth percentage progress engine (00% -> 100%)
+  // 4. Smooth percentage engine & Precision Orbital Progress Arc
+  const CIRCLE_RADIUS = 75;
+  const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * CIRCLE_RADIUS; // ~471.2px
+
   useEffect(() => {
     let currentProgress = 0;
     const interval = setInterval(() => {
-      // If we are reaching 88-92% and the backend is still initializing, gracefully wait
+      // If nearing 90% and backend is still verifying, gracefully hold
       if (currentProgress >= 90 && !isAppReadyRef.current) {
-        setStatusText('SYNCHRONIZING WITH VAULT');
+        setStatusText('SYNCHRONIZING SECURE TENANT');
         return;
       }
 
       if (currentProgress >= 100) {
         clearInterval(interval);
         setStatusText('SYSTEM SYNCHRONIZED');
-        animationFinishedRef.current = true;
-        triggerCompletion();
+        if (!completionTriggeredRef.current) {
+          completionTriggeredRef.current = true;
+          triggerExitTransition();
+        }
         return;
       }
 
-      // Smooth organic increment
-      const step = phase === 'LOGO' ? Math.max(1, (100 - currentProgress) / 5) : 3;
-      currentProgress = Math.min(100, currentProgress + step);
+      // Smooth mathematical acceleration
+      const delta = phase === 'TYPOGRAPHY' ? Math.max(1, (100 - currentProgress) / 5) : 3.5;
+      currentProgress = Math.min(100, currentProgress + delta);
       setProgress(Math.round(currentProgress));
     }, 40);
 
-    const triggerCompletion = () => {
-      // Trigger subtle diagonal silver light sweep
-      setShowLightSweep(true);
+    const triggerExitTransition = () => {
+      // Trigger horizontal anamorphic lens flare
+      setShowExitFlare(true);
 
-      // Begin cinematic upward elevation and mask dissolve (350ms after 100%)
+      // Trigger cinematic shutter mask dissolve (380ms after flare)
       setTimeout(() => {
         setIsExitTransitioning(true);
 
-        // Hand over cleanly to the dashboard / homepage (750ms after mask dissolves)
+        // Hand over cleanly to the dashboard / homepage (750ms after mask dissolve)
         setTimeout(() => {
           onFinish?.();
         }, 750);
-      }, 350);
+      }, 380);
     };
 
     return () => {
@@ -154,133 +159,174 @@ export const Preloader = ({ onFinish }) => {
     };
   }, [phase, onFinish]);
 
-  // Generate deterministic atmospheric floating particles
-  const particles = [
-    { top: '18%', left: '15%', size: 3, delay: '0s' },
-    { top: '25%', left: '82%', size: 2, delay: '1.2s' },
-    { top: '68%', left: '12%', size: 2.5, delay: '2.5s' },
-    { top: '75%', left: '78%', size: 3, delay: '0.8s' },
-    { top: '40%', left: '22%', size: 2, delay: '3.1s' },
-    { top: '55%', left: '88%', size: 2.5, delay: '1.8s' },
-    { top: '85%', left: '45%', size: 2, delay: '2.0s' },
-  ];
+  // Dynamic stroke-dashoffset calculation for the orbital progress arc
+  const strokeDashoffset = CIRCLE_CIRCUMFERENCE - (progress / 100) * CIRCLE_CIRCUMFERENCE;
 
   return (
     <div
-      className={`wealth-pulse-overlay ${isExitTransitioning ? 'exit-transition' : ''}`}
+      className={`black-diamond-overlay ${isExitTransitioning ? 'exit-transition' : ''}`}
       role="status"
       aria-live="polite"
       aria-label="Loading Expense Tracker"
     >
-      {/* Subtle Radial Ambient Glow */}
-      <div className="wealth-pulse-ambient" />
+      {/* Film Grain Texture */}
+      <div className="bd-grain-texture" />
 
-      {/* Subtle Film Grain Noise Overlay */}
-      <div className="wealth-pulse-grain" />
+      {/* Architectural Precision Grid Lines */}
+      <div className="bd-architectural-grid" />
 
-      {/* Floating Micro-Particles Field */}
-      <div className="particle-field">
-        {particles.map((p, idx) => (
-          <div
-            key={idx}
-            className="particle"
-            style={{
-              top: p.top,
-              left: p.left,
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              animationDelay: p.delay,
-            }}
-          />
-        ))}
+      {/* Ambient Radial Vignette */}
+      <div className="bd-ambient-vignette" />
+
+      {/* Phase 1: Architectural Light Beam Sweep */}
+      <div className="bd-opening-beam" />
+
+      {/* Anamorphic Lens Flare at Exit */}
+      {showExitFlare && <div className="bd-anamorphic-flare" />}
+
+      {/* Concentric Expanding Pulse Rings (Opening Phase) */}
+      <div className="concentric-rings-stage">
+        <div className="concentric-ring ring-1" />
+        <div className="concentric-ring ring-2" />
+        <div className="concentric-ring ring-3" />
+        <div className="concentric-ring ring-4" />
       </div>
 
-      {/* Diagonal Light Sweep (Phase 6) */}
-      {showLightSweep && <div className="diagonal-light-sweep" />}
+      {/* Drifting Specular Coins (Layered 3D Depth) */}
+      <div className="drifting-coins-field">
+        <div className="drifting-coin coin-fg-1" />
+        <div className="drifting-coin coin-mg-2" />
+        <div className="drifting-coin coin-bg-3" />
+        <div className="drifting-coin coin-bokeh-4" />
+      </div>
 
-      {/* Main Stage Choreography */}
-      <div className="stage-container">
-        {/* Phase 1: Center Glowing Dot */}
-        {phase === 'DOT' && <div className="center-luminous-dot" />}
+      {/* Main 3D Choreography Stage */}
+      <div className="bd-stage">
+        {/* Core Luminous Particle during Opening */}
+        {phase === 'OPENING' && <div className="bd-core-particle" />}
 
-        {/* Phase 2: The Money Flow Financial Chart */}
-        {(phase === 'FLOW' || phase === 'COINS') && (
-          <div className="money-flow-chart">
+        {/* 3D Gyroscopic Orbital Rings */}
+        <div className="orbital-gyro-system">
+          <div className="gyro-ring-1" />
+          <div className="gyro-ring-2" />
+          <div className="gyro-ring-3" />
+        </div>
+
+        {/* Custom 3D Financial Emblem: "The Capital Ascent" */}
+        {(phase === 'ASSEMBLY' || phase === 'TRAIL' || phase === 'TYPOGRAPHY') && (
+          <div className="emblem-assembly-stage">
+            {/* Precision Orbital Circular Progress Arc */}
+            <div className="orbital-progress-container">
+              <svg viewBox="0 0 170 170" className="orbital-progress-svg">
+                <defs>
+                  <linearGradient id="progressArcGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ffffff" stopOpacity="0.2" />
+                    <stop offset="60%" stopColor="#e4e4e7" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
+                  </linearGradient>
+                </defs>
+                {/* Background Ring Track */}
+                <circle
+                  cx="85"
+                  cy="85"
+                  r={CIRCLE_RADIUS}
+                  className="orbital-progress-track"
+                />
+                {/* Luminous Active Progress Arc */}
+                <circle
+                  cx="85"
+                  cy="85"
+                  r={CIRCLE_RADIUS}
+                  className="orbital-progress-fill"
+                  style={{
+                    strokeDasharray: CIRCLE_CIRCUMFERENCE,
+                    strokeDashoffset: strokeDashoffset,
+                  }}
+                />
+              </svg>
+            </div>
+
+            {/* Layer 1: Sculptural Metallic Ring */}
+            <div className="emblem-layer-ring" />
+
+            {/* Layer 2: Rising Geometric Vector Line ("The Ascent") */}
+            <div className="emblem-layer-vector">
+              <svg viewBox="0 0 80 80" className="ascent-vector-svg">
+                <defs>
+                  <linearGradient id="ascentGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#ffffff" stopOpacity="0.4" />
+                    <stop offset="45%" stopColor="#d4d4d8" stopOpacity="0.9" />
+                    <stop offset="80%" stopColor="#ffffff" stopOpacity="1" />
+                    <stop offset="100%" stopColor="#a1a1aa" stopOpacity="0.8" />
+                  </linearGradient>
+                </defs>
+                {/* Stylized Ascending Arrow & Faceted Growth Line */}
+                <path
+                  d="M 18,58 L 38,38 L 50,46 L 68,22"
+                  fill="none"
+                  stroke="url(#ascentGrad)"
+                  strokeWidth="3.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <polyline
+                  points="54,22 68,22 68,36"
+                  fill="none"
+                  stroke="#ffffff"
+                  strokeWidth="3.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+
+            {/* Layer 3: Central Precision Coin Core with Indian Rupee */}
+            <div className="emblem-layer-coin">
+              <IndianRupee className="emblem-coin-rupee" strokeWidth={2.8} />
+            </div>
+
+            {/* Specular Fusion Burst Flash upon Assembly */}
+            <div className="assembly-specular-flash" />
+          </div>
+        )}
+
+        {/* Financial Light Trail Spline */}
+        {(phase === 'TRAIL' || phase === 'TYPOGRAPHY') && (
+          <div className="financial-trail-svg">
             <svg viewBox="0 0 480 140" className="w-full h-full overflow-visible">
               <defs>
-                <linearGradient id="moneyFlowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="financialTrailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#ffffff" stopOpacity="0.1" />
-                  <stop offset="40%" stopColor="#e4e4e7" stopOpacity="0.7" />
+                  <stop offset="35%" stopColor="#e4e4e7" stopOpacity="0.75" />
                   <stop offset="70%" stopColor="#ffffff" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.9" />
+                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.85" />
                 </linearGradient>
               </defs>
-              {/* Background Reference Track */}
               <path
-                d="M 20,110 Q 80,110 130,55 T 230,85 T 330,35 T 410,65 T 465,20"
-                className="flow-path-bg"
-              />
-              {/* Active Luminous Flow Curve */}
-              <path
-                d="M 20,110 Q 80,110 130,55 T 230,85 T 330,35 T 410,65 T 465,20"
-                className="flow-path-active"
+                d="M 25,105 Q 85,105 135,50 T 235,80 T 335,30 T 415,60 T 465,18"
+                className="trail-line-path"
               />
             </svg>
 
-            {/* Peak Financial Markers */}
-            <div className="peak-marker" style={{ left: '27%', top: '39%' }} />
-            <div className="peak-marker" style={{ left: '69%', top: '25%' }} />
-            <div className="peak-marker" style={{ left: '97%', top: '14%' }} />
+            {/* Illuminating Sequential Crest Nodes */}
+            <div className="trail-crest-node" style={{ left: '28%', top: '35%', animationDelay: '0.4s' }} />
+            <div className="trail-crest-node" style={{ left: '70%', top: '22%', animationDelay: '0.9s' }} />
+            <div className="trail-crest-node" style={{ left: '97%', top: '13%', animationDelay: '1.4s' }} />
           </div>
         )}
 
-        {/* Phase 3: The 3D Coin Formation */}
-        {phase === 'COINS' && (
-          <div className="coin-formation-stage">
-            <div className="coin-disc coin-disc-1" />
-            <div className="coin-disc coin-disc-2" />
-            <div className="coin-disc coin-disc-3" />
-            <div className="coin-disc coin-disc-4" />
-            <div className="coin-disc coin-disc-5" />
-            <div className="convergence-flash" />
-          </div>
-        )}
+        {/* Premium Typography & Status Readout */}
+        {phase === 'TYPOGRAPHY' && (
+          <div className="bd-typography-group">
+            <h1 className="bd-brand-title">EXPENSE TRACKER</h1>
+            <p className="bd-brand-tagline">EVERY RUPEE. UNDER CONTROL.</p>
 
-        {/* Phase 4 & 5: Minimal Finance Emblem, Brand Reveal & Financial Pulse */}
-        {phase === 'LOGO' && (
-          <div className={`logo-reveal-group ${isExitTransitioning ? 'elevate-exit' : ''}`}>
-            {/* Luxury Geometric Financial Emblem */}
-            <div className="fintech-luxury-emblem">
-              <div className="emblem-outer-ring" />
-              <div className="emblem-core-shield">
-                <IndianRupee className="emblem-rupee-glyph" strokeWidth={2.5} />
-              </div>
-            </div>
-
-            {/* Brand Title */}
-            <h1 className="brand-name-title">EXPENSE TRACKER</h1>
-
-            {/* Tagline */}
-            <p className="brand-tagline">“Every rupee. Under control.”</p>
-
-            {/* Financial Pulse Progress Track */}
-            <div className="financial-pulse-container">
-              <div className="pulse-track">
-                <div
-                  className="pulse-bar"
-                  style={{ width: `${progress}%` }}
-                >
-                  <div className="pulse-spark" />
-                </div>
-              </div>
-
-              {/* Status and Tabular Numeric Counter */}
-              <div className="pulse-readout">
-                <span className="pulse-status">{statusText}</span>
-                <span className="pulse-percentage">
-                  {String(progress).padStart(2, '0')}%
-                </span>
-              </div>
+            {/* Compact Metric Readout Bar */}
+            <div className="bd-status-bar">
+              <span className="bd-status-label">{statusText}</span>
+              <span className="bd-status-value">
+                {String(progress).padStart(2, '0')}%
+              </span>
             </div>
           </div>
         )}

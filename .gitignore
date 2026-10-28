@@ -32,6 +32,7 @@ pnpm-debug.log*
 # IDE & Editor files
 .idea/
 .vscode/
+!.vscode/tasks.json
 *.iml
 *.iws
 *.ipr

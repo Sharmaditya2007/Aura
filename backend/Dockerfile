@@ -1,20 +1,15 @@
-# Multi-stage Dockerfile for Spring Boot Backend
-FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
-WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
-COPY src ./src
-RUN mvn clean package -DskipTests
+FROM node:20-alpine
 
-# Runtime Stage
-FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
-COPY --from=build /app/target/*.jar app.jar
+
+COPY package*.json ./
+
+RUN npm ci --omit=dev
+
+COPY . .
 
 EXPOSE 8080
 ENV PORT=8080
-ENV JAVA_OPTS="-Xms256m -Xmx512m"
+ENV NODE_ENV=production
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar app.jar"]
+CMD ["node", "server.js"]

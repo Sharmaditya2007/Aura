@@ -1,5 +1,5 @@
 services:
-  # Spring Boot Backend Web Service
+  # Node.js Express Backend Web Service
   - type: web
     name: aura-finance-backend
     env: docker

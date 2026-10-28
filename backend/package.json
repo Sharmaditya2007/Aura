@@ -1,5 +1,5 @@
 {
-  "name": "expense-tracker-api-node",
+  "name": "expense-tracker-api",
   "version": "1.0.0",
   "description": "Expense Tracker and Financial Management REST API (Node.js/Express)",
   "main": "server.js",

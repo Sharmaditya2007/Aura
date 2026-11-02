@@ -128,8 +128,16 @@ export const Sidebar = ({ isOpen, onClose }) => {
         <div className="p-4 border-t border-[#292929] bg-[#0c0c0c]">
           <div className="flex items-center justify-between p-2 rounded-xl bg-[#171717] border border-[#292929] mb-2">
             <div className="flex items-center gap-3 overflow-hidden">
-              <div className="w-9 h-9 rounded-lg bg-[#242424] border border-[#383838] flex items-center justify-center text-white font-bold text-xs uppercase shrink-0">
-                {user?.fullName?.charAt(0) || 'U'}
+              <div className="w-9 h-9 rounded-lg bg-[#242424] border border-[#383838] flex items-center justify-center text-white font-bold text-xs uppercase shrink-0 overflow-hidden">
+                {user?.profilePicture ? (
+                  <img
+                    src={user.profilePicture}
+                    alt={user?.fullName || 'User'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  user?.fullName?.charAt(0) || 'U'
+                )}
               </div>
               <div className="truncate">
                 <div className="text-xs font-semibold text-white truncate">{user?.fullName || 'User'}</div>

@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const User = require('../models/User');
+const cloudinary = require('../config/cloudinary');
 const emailService = require('./emailService');
 const notificationService = require('./notificationService');
 const { BadRequestError, ConflictError, NotFoundError } = require('../middleware/errorHandler');
@@ -16,6 +17,7 @@ function buildUserSummary(user) {
     email: user.email,
     role: user.role,
     status: user.status,
+    profilePicture: user.profilePicture || null,
     createdAt: user.createdAt ? user.createdAt.toISOString() : null,
     lastLoginAt: user.lastLoginAt ? user.lastLoginAt.toISOString() : null
   };
@@ -291,6 +293,73 @@ async function getCurrentUser(userId) {
   return buildUserSummary(user);
 }
 
+async function uploadProfilePicture(userId, file) {
+  if (!file || !file.buffer) {
+    throw new BadRequestError('Please provide an image file');
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new NotFoundError(`User not found with id: ${userId}`);
+  }
+
+  // Upload image buffer to Cloudinary
+  const uploadResult = await new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'aura_finance/profile_pictures',
+        resource_type: 'image',
+        transformation: [
+          { width: 400, height: 400, crop: 'fill', gravity: 'face' }
+        ]
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+    uploadStream.end(file.buffer);
+  });
+
+  // Remove previous image from Cloudinary if one was already stored
+  if (user.profilePicturePublicId) {
+    try {
+      await cloudinary.uploader.destroy(user.profilePicturePublicId);
+    } catch (destroyErr) {
+      console.warn('Could not remove previous Cloudinary image:', destroyErr.message);
+    }
+  }
+
+  user.profilePicture = uploadResult.secure_url;
+  user.profilePicturePublicId = uploadResult.public_id;
+  user.updatedAt = new Date();
+  await user.save();
+
+  return buildUserSummary(user);
+}
+
+async function removeProfilePicture(userId) {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new NotFoundError(`User not found with id: ${userId}`);
+  }
+
+  if (user.profilePicturePublicId) {
+    try {
+      await cloudinary.uploader.destroy(user.profilePicturePublicId);
+    } catch (destroyErr) {
+      console.warn('Could not remove Cloudinary image on delete:', destroyErr.message);
+    }
+  }
+
+  user.profilePicture = null;
+  user.profilePicturePublicId = null;
+  user.updatedAt = new Date();
+  await user.save();
+
+  return buildUserSummary(user);
+}
+
 module.exports = {
   register,
   verifyOtp,
@@ -300,5 +369,7 @@ module.exports = {
   resetPassword,
   changePassword,
   getCurrentUser,
+  uploadProfilePicture,
+  removeProfilePicture,
   buildUserSummary
 };

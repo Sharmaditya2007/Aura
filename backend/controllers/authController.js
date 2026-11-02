@@ -86,6 +86,24 @@ async function getCurrentUser(req, res, next) {
   }
 }
 
+async function uploadProfilePicture(req, res, next) {
+  try {
+    const user = await authService.uploadProfilePicture(req.user._id, req.file);
+    res.json(success(user, 'Profile picture uploaded successfully'));
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function removeProfilePicture(req, res, next) {
+  try {
+    const user = await authService.removeProfilePicture(req.user._id);
+    res.json(success(user, 'Profile picture removed successfully'));
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getStatus,
   register,
@@ -95,5 +113,7 @@ module.exports = {
   forgotPassword,
   resetPassword,
   changePassword,
-  getCurrentUser
+  getCurrentUser,
+  uploadProfilePicture,
+  removeProfilePicture
 };

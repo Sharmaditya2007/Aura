@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const { authenticateToken } = require('../middleware/auth');
+const { handleUpload } = require('../middleware/upload');
 
 router.get('/status', authController.getStatus);
 router.post('/register', authController.register);
@@ -14,5 +15,8 @@ router.post('/reset-password', authController.resetPassword);
 // Protected auth routes
 router.post('/change-password', authenticateToken, authController.changePassword);
 router.get('/me', authenticateToken, authController.getCurrentUser);
+router.post('/profile-picture', authenticateToken, handleUpload, authController.uploadProfilePicture);
+router.put('/profile-picture', authenticateToken, handleUpload, authController.uploadProfilePicture);
+router.delete('/profile-picture', authenticateToken, authController.removeProfilePicture);
 
 module.exports = router;

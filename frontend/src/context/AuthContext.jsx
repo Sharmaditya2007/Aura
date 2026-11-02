@@ -104,6 +104,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUser = (userData) => {
+    setUser(userData);
+    localStorage.setItem('aura_user', JSON.stringify(userData));
+  };
+
   const value = {
     user,
     token,
@@ -116,6 +121,7 @@ export const AuthProvider = ({ children }) => {
     resendOtp,
     logout,
     refreshUser,
+    updateUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

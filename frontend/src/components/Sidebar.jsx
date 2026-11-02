@@ -13,7 +13,8 @@ import {
   ShieldCheck,
   LogOut,
   X,
-  IndianRupee
+  IndianRupee,
+  Settings
 } from 'lucide-react';
 
 export const Sidebar = ({ isOpen, onClose }) => {
@@ -34,6 +35,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
     { to: '/budgets', label: 'Budgets', icon: PieChart },
     { to: '/recurring', label: 'Recurring', icon: Repeat },
     { to: '/reports', label: 'Reports & Analytics', icon: BarChart3 },
+    { to: '/settings', label: 'Settings', icon: Settings },
   ];
 
   return (
@@ -126,9 +128,20 @@ export const Sidebar = ({ isOpen, onClose }) => {
 
         {/* User Identity & Logout Footer */}
         <div className="p-4 border-t border-[#292929] bg-[#0c0c0c]">
-          <div className="flex items-center justify-between p-2 rounded-xl bg-[#171717] border border-[#292929] mb-2">
+          <NavLink
+            to="/settings"
+            onClick={() => onClose && onClose()}
+            className={({ isActive }) =>
+              `flex items-center justify-between p-2 rounded-xl border mb-2 transition-all group ${
+                isActive
+                  ? 'bg-[#1c1c1c] border-white/40 shadow-sm'
+                  : 'bg-[#171717] border-[#292929] hover:border-[#383838]'
+              }`
+            }
+            title="Account & Profile Settings"
+          >
             <div className="flex items-center gap-3 overflow-hidden">
-              <div className="w-9 h-9 rounded-lg bg-[#242424] border border-[#383838] flex items-center justify-center text-white font-bold text-xs uppercase shrink-0 overflow-hidden">
+              <div className="w-9 h-9 rounded-lg bg-[#242424] border border-[#383838] flex items-center justify-center text-white font-bold text-xs uppercase shrink-0 overflow-hidden group-hover:border-white/40 transition-colors">
                 {user?.profilePicture ? (
                   <img
                     src={user.profilePicture}
@@ -140,7 +153,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
                 )}
               </div>
               <div className="truncate">
-                <div className="text-xs font-semibold text-white truncate">{user?.fullName || 'User'}</div>
+                <div className="text-xs font-semibold text-white truncate group-hover:text-white transition-colors">{user?.fullName || 'User'}</div>
                 <div className="text-[11px] text-[#737373] truncate font-mono">{user?.email}</div>
               </div>
             </div>
@@ -149,7 +162,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
                 ADMIN
               </span>
             )}
-          </div>
+          </NavLink>
 
           <button
             onClick={handleLogout}

@@ -2,14 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import {
-  Settings,
-  User,
-  Shield,
   KeyRound,
   CheckCircle2,
-  Lock,
-  Database,
-  Server,
   Camera,
   Upload,
   Trash2,
@@ -394,51 +388,6 @@ export const SettingsPage = () => {
             {pwdLoading ? 'Updating Password...' : 'Save New Password'}
           </button>
         </form>
-      </div>
-
-      {/* System & Database Architecture Card */}
-      <div className="fintech-card p-6 space-y-4">
-        <div className="flex items-center gap-2.5 mb-2">
-          <Database className="w-4 h-4 text-white" />
-          <h3 className="text-sm font-bold text-white">System Architecture & Database</h3>
-        </div>
-
-        <div className="space-y-3 text-xs">
-          <div className="flex items-center justify-between p-3 rounded-xl bg-[#141414] border border-[#242424]">
-            <div className="flex items-center gap-2.5">
-              <span className="w-2 h-2 rounded-full bg-fintech-green" />
-              <span className="text-white font-medium">MongoDB Native Service</span>
-            </div>
-            <span className="font-mono text-[#737373]">port 27017 • Decimal128 Active</span>
-          </div>
-
-          <div className="flex items-center justify-between p-3 rounded-xl bg-[#141414] border border-[#242424]">
-            <div className="flex items-center gap-2.5">
-              <span className="w-2 h-2 rounded-full bg-fintech-green" />
-              <span className="text-white font-medium">Spring Boot REST API</span>
-            </div>
-            <span className="font-mono text-[#737373]">port 8080 • Java 17 • Spring Security 6</span>
-          </div>
-
-          <div className="flex items-center justify-between p-3 rounded-xl bg-[#141414] border border-[#242424]">
-            <div className="flex items-center gap-2.5">
-              <span className="w-2 h-2 rounded-full bg-fintech-green" />
-              <span className="text-white font-medium">Automated Recurring Scheduler</span>
-            </div>
-            <span className="font-mono text-[#737373]">@Scheduled Hourly & Daily Active</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Security Info Card */}
-      <div className="fintech-card p-6 space-y-4">
-        <div className="flex items-center gap-2.5 mb-2">
-          <Lock className="w-4 h-4 text-white" />
-          <h3 className="text-sm font-bold text-white">Security & Cryptography</h3>
-        </div>
-        <p className="text-xs text-[#A3A3A3] leading-relaxed">
-          Your account uses BCrypt password hashing and HMAC-SHA256 authenticated JSON Web Tokens. Financial amounts are calculated with strict IEEE 754-2008 Decimal128 representation, eliminating rounding errors.
-        </p>
       </div>
     </div>
   );
